@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 2020_06_25_074947) do
     t.datetime "updated_at", null: false
     t.integer "result", default: [], array: true
     t.bigint "shopify_product_id"
-    t.integer "inventry"
+    t.integer "inventory"
   end
 
   create_table "settings", force: :cascade do |t|
