@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shopify_product_title: MyString
+  shopify_product_id: 
+  has_variant: false
+  shop_id: 1
+
+two:
+  shopify_product_title: MyString
+  shopify_product_id: 
+  has_variant: false
+  shop_id: 1
