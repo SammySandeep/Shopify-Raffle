@@ -10,10 +10,73 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_16_101312) do
+ActiveRecord::Schema.define(version: 2020_06_25_074947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "line1"
+    t.string "line2"
+    t.string "city"
+    t.string "country"
+    t.string "state"
+    t.integer "pin"
+    t.integer "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "customers", force: :cascade do |t|
+    t.bigint "shopify_customer_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email_id"
+    t.integer "default_participant_chance"
+    t.integer "shop_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "participants", force: :cascade do |t|
+    t.integer "raffle_id"
+    t.integer "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "shopify_product_title"
+    t.bigint "shopify_product_id"
+    t.boolean "has_variant"
+    t.integer "shop_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "raffles", force: :cascade do |t|
+    t.string "title"
+    t.datetime "raffle_date"
+    t.integer "shop_id"
+    t.integer "winner_customer_id"
+    t.string "delivery_method"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "result", default: [], array: true
+    t.bigint "shopify_product_id"
+    t.integer "inventry"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.integer "shop_id"
+    t.text "email_body_for_winner"
+    t.text "email_body_for_participant"
+    t.text "email_body_for_registration"
+    t.text "email_body_for_customer_registration_verification"
+    t.integer "purchase_window"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "shops", force: :cascade do |t|
     t.string "shopify_domain", null: false

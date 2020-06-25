@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shop_id: 1
+  email_body_for_winner: MyText
+  email_body_for_participant: MyText
+  email_body_for_registration: MyText
+  email_body_for_customer_registration_verification: MyText
+  purchase_window: 1
+
+two:
+  shop_id: 1
+  email_body_for_winner: MyText
+  email_body_for_participant: MyText
+  email_body_for_registration: MyText
+  email_body_for_customer_registration_verification: MyText
+  purchase_window: 1
