@@ -3,7 +3,7 @@ class Customer < ApplicationRecord
   belongs_to :shop
   has_many :participants
   has_many :raffles, through: :participants
-  belongs_to :address
+  has_one :address
 
   validates :shopify_customer_id, format: { with: /\A\d+\z/ }, numericality: { greater_than: 0 }, presence: true
   validates :first_name, presence: true

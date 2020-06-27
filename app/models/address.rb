@@ -12,6 +12,6 @@ class Address < ApplicationRecord
   validates :country, format: { with: /[a-zA-Z]/ }
   validates :state, presence: true
   validates :state, format: { with: /[a-zA-Z]/ }
-  validates :pin, format: { with: /\A\d+\z/ }, numericality: { greater_than: 0 }, presence: true
-  validates :customer_id, format: { with: /\A\d+\z/ }, numericality: { greater_than: 0 }, presence: true
+  validates :pin, numericality: { greater_than: 0 }, presence: true
+  validates :customer_id, numericality: { greater_than: 0 }, presence: true
 end
