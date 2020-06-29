@@ -2,6 +2,7 @@
 
 class Raffle < ApplicationRecord
   belongs_to :shop
+
   has_many :participants
   has_many :customers, through: :participants
 

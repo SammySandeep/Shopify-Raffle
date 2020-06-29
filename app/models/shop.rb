@@ -41,7 +41,7 @@ class Shop < ActiveRecord::Base
       Product.create(
         shopify_product_title: product.title,
         shopify_product_id: product.id,
-        has_variant: product.variants.count > 1,
+        has_variant: (product.variants.count.positive? and product.variants.first.title != 'Default Title'),
         shop_id: id
       )
       product.variants.each do |variant|
@@ -49,7 +49,6 @@ class Shop < ActiveRecord::Base
           title: 'PID' + product.id.to_s + '-' + product.title.gsub(' ', '') + '-VID' + variant.id.to_s + '-' + variant.title.gsub(' ', ''),
           shopify_product_id: product.id,
           inventory: variant.inventory_quantity,
-          delivery_method: 'offline',
           shop_id: id
         )
       end
