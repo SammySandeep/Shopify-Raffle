@@ -11,7 +11,7 @@ class ShopifyApp::WebhooksController < ApplicationController
     return if params[:tags].nil?
 
     @tags = params[:tags].split(',').collect { |tag| tag.strip.downcase }
-    return unless @tags.include?('raffle') && @tags.any? { |tag| tag.include? 'launch' }
+    return unless @tags.include?('raffle') && @tags.any? { |tag| tag.include? 'launch' } && (@tags.include?('online') || @tags.include?('offline'))
 
     @product_local = Product.find_by(shopify_product_id: params[:id], status: 'pending')
     if @product_local.nil?
