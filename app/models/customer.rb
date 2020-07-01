@@ -3,8 +3,8 @@
 class Customer < ApplicationRecord
   belongs_to :shop
 
-  has_many :participants
-  has_many :raffles, through: :participants
+  has_many :results
+  has_many :raffles, through: :results
 
   has_one :address
 

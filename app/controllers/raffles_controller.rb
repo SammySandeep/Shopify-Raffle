@@ -1,5 +1,6 @@
-class RafflesController < HomeController
+# frozen_string_literal: true
 
+class RafflesController < HomeController
   def index
     @raffles = Raffle.all
   end
@@ -7,5 +8,4 @@ class RafflesController < HomeController
   def show
     @raffle = Raffle.find(params[:id])
   end
-
 end
