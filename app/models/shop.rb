@@ -71,26 +71,14 @@ class Shop < ActiveRecord::Base
   retry
  end  
   customers_array.each do |customer|
-    if customer.addresses.present?
       @customer = Customer.create(
       shopify_customer_id: customer.id,
       first_name: customer.first_name,
       last_name: customer.last_name,
       email_id: customer.email,
+      default_participant_chance: 0,
       shop_id: id
     )
-      customer.addresses.each do |address|  
-      Address.create(
-       line1: address.address1,
-       line2: address.address2,
-       city: address.city,
-       country: address.country,
-       state: address.province,
-       pin: address.zip,
-       customer_id: @customer.id
-     )
-   end
   end
- end 
 end
 end 
