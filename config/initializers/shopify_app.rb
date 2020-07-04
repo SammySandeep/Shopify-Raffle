@@ -12,8 +12,8 @@ ShopifyApp.configure do |config|
   config.api_version = '2020-04'
   config.shop_session_repository = 'Shop'
   config.webhooks = [
-    { topic: 'products/create', address: "#{ENV['URL']}/shopify_app/webhooks/products_info", format: 'json' },
-    { topic: 'products/update', address: "#{ENV['URL']}/shopify_app/webhooks/products_info", format: 'json' }
+    { topic: 'products/create', address: "#{ENV['URL']}/shopify_app/webhooks/create", format: 'json' },
+    { topic: 'products/update', address: "#{ENV['URL']}/shopify_app/webhooks/update", format: 'json' }
   ]
 end
 

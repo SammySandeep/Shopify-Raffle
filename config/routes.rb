@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   get 'raffles/:id', to: 'raffles#show', as: 'raffle'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  post '/shopify_app/webhooks/products_info', to: 'shopify_app/webhooks#products_info'
+  post '/shopify_app/webhooks/create', to: 'shopify_app/webhooks/products#create'
+  post '/shopify_app/webhooks/update', to: 'shopify_app/webhooks/products#update'
 
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == ENV['ADMIN_NAME'] && password == ENV['ADMIN_PASSWORD']
