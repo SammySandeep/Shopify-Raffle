@@ -3,7 +3,9 @@
 one:
   raffle_id: 1
   customer_id: 1
+  type: 
 
 two:
   raffle_id: 1
   customer_id: 1
+  type: 
