@@ -2,7 +2,8 @@
 
 class Shop < ActiveRecord::Base
   include ShopifyApp::ShopSessionStorage
-  after_save :sync_data
+  include ApplicationHelper
+  after_save :get_customers
 
   has_one :setting
   has_many :products
@@ -13,72 +14,9 @@ class Shop < ActiveRecord::Base
   end
 
   private
-
-  def sync_data
-    session_create
-    sync_product
-    sync_customer
-  end
-
-  def session_create
-    session = ShopifyAPI::Session.new(domain: shopify_domain, token: shopify_token, api_version: api_version)
-    ShopifyAPI::Base.activate_session(session)
-  end
-
-  def sync_product
-    begin
-      products = ShopifyAPI::Product.find(:all, params: { limit: 250 })
-      products_array = []
-      loop do
-        products_array += products
-        break unless products.next_page?
-
-        products = products.fetch_next_page
-      end
-    rescue StandardError
-      retry
-    end
-    products_array.each do |product|
-      Product.create(
-        shopify_product_title: product.title,
-        shopify_product_id: product.id,
-        has_variant: product.variants.count > 1,
-        shop_id: id
-      )
-      product.variants.each do |variant|
-        Raffle.create(
-          title: 'PID' + product.id.to_s + '-' + product.title.gsub(' ', '') + '-VID' + variant.id.to_s + '-' + variant.title.gsub(' ', ''),
-          shopify_product_id: product.id,
-          inventory: variant.inventory_quantity,
-          delivery_method: 'offline',
-          shop_id: id
-        )
-      end
-    end
-  end
   
- def sync_customer
-  begin
-   customers = ShopifyAPI::Customer.find(:all, params: {limit: 250})
-   customers_array = []
-   loop do
-     customers_array += customers
-     break unless customers.next_page?
-   
-     customers = customers.fetch_next_page
+  def get_customers 
+    Sync::Customers.perform_now
   end
- rescue StandardError
-  retry
- end  
-  customers_array.each do |customer|
-      @customer = Customer.create(
-      shopify_customer_id: customer.id,
-      first_name: customer.first_name,
-      last_name: customer.last_name,
-      email_id: customer.email,
-      default_participant_chance: 0,
-      shop_id: id
-    )
-  end
-end
+
 end 
