@@ -2,7 +2,6 @@
 
 class Shop < ActiveRecord::Base
   include ShopifyApp::ShopSessionStorage
-  include ApplicationHelper
   after_save :get_customers
 
   has_one :setting
@@ -16,7 +15,7 @@ class Shop < ActiveRecord::Base
   private
   
   def get_customers 
-    Sync::Customers.perform_now
+    Sync::Customers.perform_async(self.id)
   end
 
 end 

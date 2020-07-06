@@ -1,8 +1,10 @@
 class Sync::Customers
   include Sidekiq::Worker
+  include ApplicationHelper
 
-  def perform
-    session_activate(self)
+  def perform(shop_id)
+    shop = Shop.find(shop_id)
+    session_activate(shop)
         begin
             store_customers = ShopifyAPI::Customer.find(:all, params: {limit: 250})
             customers = Array.new
@@ -15,19 +17,19 @@ class Sync::Customers
         rescue StandardError
           retry
         end  
-    sync_customers customers 
+    sync_customers(customers, shop)
    end
 
    private
 
-    def sync_customers customers
+    def sync_customers(customers, shop)
         customers.each do |customer|
             Customer.create(
             shopify_customer_id: customer.id,
             first_name: customer.first_name,
             last_name: customer.last_name,
             email_id: customer.email,
-            shop_id: self.id
+            shop_id: shop.id
             )
         end
     end
