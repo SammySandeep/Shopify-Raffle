@@ -13,8 +13,9 @@ ShopifyApp.configure do |config|
   config.shop_session_repository = 'Shop'
   config.webhooks = [
     { topic: 'products/create', address: "#{ENV['URL']}/shopify_app/webhooks/create", format: 'json' },
-    { topic: 'products/update', address: "#{ENV['URL']}/shopify_app/webhooks/update", format: 'json' }
-  ]
+    { topic: 'products/update', address: "#{ENV['URL']}/shopify_app/webhooks/update", format: 'json' },
+    {topic: 'orders/update', address: "#{ENV['URL']}/shopify_app/webhooks/order_upadte_participant_chance", format: 'json'}
+    ]
 end
 
 # ShopifyApp::Utils.fetch_known_api_versions                        # Uncomment to fetch known api versions from shopify servers on boot
