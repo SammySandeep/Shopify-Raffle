@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   get 'raffles', to: 'raffles#index'
   get 'raffles/:id', to: 'raffles#show', as: 'raffle'
+  get 'raffles/show_winner_runner/:id', to: 'raffles#show_winner_runner', as: 'raffle_winner_runner'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   post '/shopify_app/webhooks/create', to: 'shopify_app/webhooks/products#create'
