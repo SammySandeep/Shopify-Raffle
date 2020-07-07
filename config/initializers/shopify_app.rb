@@ -1,17 +1,20 @@
+# frozen_string_literal: true
+
 ShopifyApp.configure do |config|
-  config.application_name = "My Shopify App"
+  config.application_name = 'My Shopify App'
   config.api_key = ENV['SHOPIFY_API_KEY']
   config.secret = ENV['SHOPIFY_API_SECRET']
-  config.old_secret = ""
-  config.scope = "read_products,read_customers" # Consult this page for more scope options:
-                                 # https://help.shopify.com/en/api/getting-started/authentication/oauth/scopes
+  config.old_secret = ''
+  config.scope = 'read_products,read_customers,read_orders' # Consult this page for more scope options:
+  # https://help.shopify.com/en/api/getting-started/authentication/oauth/scopes
   config.embedded_app = true
   config.after_authenticate_job = false
-  config.api_version = "2020-04"
+  config.api_version = '2020-04'
   config.shop_session_repository = 'Shop'
   config.webhooks = [
-    {topic: 'products/create', address: "#{ENV['URL']}/shopify_app/webhooks/products_info", format: 'json'},
-    {topic: 'products/update', address: "#{ENV['URL']}/shopify_app/webhooks/products_info", format: 'json'},
+    { topic: 'products/create', address: "#{ENV['URL']}/shopify_app/webhooks/create", format: 'json' },
+    { topic: 'products/update', address: "#{ENV['URL']}/shopify_app/webhooks/update", format: 'json' },
+    { topic: 'orders/create', address: "#{ENV['URL']}/shopify_app/webhooks/order_upadte_participant_chance", format: 'json'}
     ]
 end
 
