@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   get 'contents/home'
   root to: 'home#index'
   resources :settings
-  resources :raffles
   mount ShopifyApp::Engine, at: '/'
 
   get 'raffles', to: 'raffles#index'
