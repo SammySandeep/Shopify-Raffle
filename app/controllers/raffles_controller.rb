@@ -5,28 +5,44 @@ class RafflesController < HomeController
     @raffles = Raffle.all
   end
 
-  def show
-    @raffle = Raffle.find(params[:id])
+  def show_participant_customers
+    @raffle = Raffle.find(raffle_params[:id])
+    results_participant = Result.where(raffle_id: raffle_params[:id], type_of_customer: 'participant')
+    @participant_customers = find_customers results_participant
   end
 
-  def show_winner_runner
-    winner = Result.find_by(raffle_id: params[:id], type_of_customer: 'winner')
-    @winner_customer = Customer.find(winner.customer_id)
-    runners_results = Result.where(raffle_id: params[:id], type_of_customer: 'runner')
-    @runner_customers = find_runner_customers runners_results
+  def show_winner_and_runner_customers
+    @raffle = Raffle.find(raffle_params[:id])
+    winner = find_result_by_raffle_id_and_type_of_customer
+    @winner_customer = find_winner_customer winner.customer_id
+    runners_results = find_runner_customer_by_raffle_id_and_type_of_customer
+    @runner_customers = find_customers runners_results
   end
 
   private
 
-  def find_runner_customers runners_results
+  def raffle_params
+    params.permit(:id)
+  end
+
+  def find_runner_customer_by_raffle_id_and_type_of_customer
+    Result.where(raffle_id: raffle_params[:id], type_of_customer: 'runner')
+  end
+
+  def find_result_by_raffle_id_and_type_of_customer
+    Result.find_by(raffle_id: raffle_params[:id], type_of_customer: 'winner')
+  end
+
+  def find_winner_customer customer_id
+    Customer.find(customer_id)
+  end
+
+  def find_customers results
     runner_customers = Array.new
-    runners_results.each do |runner|
+    results.each do |runner|
       runner_customers.push(Customer.find(runner.customer_id))
     end
     return runner_customers
   end
 
-  def raffle_params
-    params.permit
-  end
 end
