@@ -5,7 +5,6 @@ class Customer < ApplicationRecord
 
   has_many :results
   has_many :raffles, through: :results
-
   has_one :address
 
   validates :shopify_customer_id, numericality: { greater_than: 0 }, presence: true

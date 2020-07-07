@@ -11,6 +11,8 @@ gem 'rails', '~> 5.2.4', '>= 5.2.4.2'
 gem 'sass-rails', '~> 5.0'
 gem 'shopify_api'
 gem 'shopify_app'
+gem 'sidekiq', '~>6.1.0'
+gem 'sidekiq-scheduler'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 group :development, :test do
@@ -30,4 +32,6 @@ group :test do
   gem 'chromedriver-helper'
   gem 'selenium-webdriver'
 end
+
+
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
