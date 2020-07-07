@@ -4,7 +4,7 @@ class Address < ApplicationRecord
   belongs_to :customer
 
   validates :line1, presence: true
-  validates :line1, format: { with: /^[a-zA-Z]$/ }
+  validates :line1, format: { with: /[a-zA-Z]/ }
   validates :line2, presence: true
   validates :line2, format: { with: /[a-zA-Z]/ }
   validates :city, presence: true

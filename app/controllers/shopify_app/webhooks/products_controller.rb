@@ -12,7 +12,6 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
   end
 
   def update
-    # product_local change to @product
     @product = Product.find_by(shopify_product_id: product_params[:id], status: 'pending')
 
     if @product.nil?
@@ -98,8 +97,6 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
       status: 'pending'
     )
   end
-
-
 
   def create_raffle(variant)
     launch_date = manipulate_launch_date
