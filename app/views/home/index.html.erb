@@ -1,22 +1,32 @@
-<h2>Products</h2>
-<%= link_to 'New Setting', new_setting_path %>
+<section>
+    <div class="container">
+      <div class="card_shadow">
+      <div class="card-body">
+        <div class="field">
+          <h4>Setup Instructions:</h4>
+            <ul>
+                <li>Install the app</li>
+                <li>Create a campaign as per instructions given below</li>
+                <li>Customize the look and feel of your popup that displays on the frontend</li>
+                <li>Once the campaign is active, track the metrics by navigating to the details page</li>
+            </ul>
+        </div>
+      </div>
+    </div><!--card_shadow-->
+    <div class="card_shadow">
+      <div class="card-body">
+        <div class="field">
+          <h4>Setup Instructions:</h4>
+            <ul>
+                <li>Install the app</li>
+                <li>Create a campaign as per instructions given below</li>
+                <li>Customize the look and feel of your popup that displays on the frontend</li>
+                <li>Once the campaign is active, track the metrics by navigating to the details page</li>
+            </ul>
+        </div>
+      </div>
+    </div><!--card_shadow-->
+    </div><!--container-->
+</section>
 
-<ul>
-  <% @products.each do |product| %>
-    <li><%= link_to product.title, "https://#{@current_shopify_session.domain}/admin/products/#{product.id}", target: "_top" %></li>
-  <% end %>
-</ul>
 
-<hr>
-
-<h2>Webhooks</h2>
-
-<% if @webhooks.present? %>
-  <ul>
-    <% @webhooks.each do |webhook| %>
-      <li><%= webhook.topic %> : <%= webhook.address %></li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>This app has not created any webhooks for this Shop. Add webhooks to your ShopifyApp initializer if you need webhooks</p>
-<% end %>

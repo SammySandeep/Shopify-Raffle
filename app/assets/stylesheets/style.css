@@ -1,0 +1,106 @@
+/* top_navbar */
+.top-bar.navbar-default {
+    padding: 10px 0;
+}
+.top-bar.navbar-default ul.list-inline {
+    margin: 0;
+}
+.top-bar.navbar-default {
+    padding: 10px 0;
+    background: #2d2b75;
+    color: #fff;
+}
+.top-bar.navbar-default a {
+    color: #fff;
+}
+.top-bar.navbar-default a:hover {
+    background: none;
+    text-decoration: none;
+}
+/* a:hover {
+    background: none;
+    text-decoration: none;
+    color: #fff !important;
+} */
+.list-inline>li {
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+/* navbar */
+.navbar{
+    padding: 10px 0px;
+}
+.navbar-light .navbar-nav .nav-link{
+    color: #000;
+    font-size: 15px;
+}
+.navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .active{
+    color: #fff !important;
+    background-color: #2d2b75;
+    border-radius: 0.25rem;
+}
+.navbar-light .navbar-toggler{
+    border: none;
+}
+
+/* configuration-page */
+.raffle_submit, .raffle_submit:hover, .raffle_submit:active{
+    color: #fff;
+    padding: 7px 25px;
+    background: #2e2c75;
+    margin: 10px;
+    border-color: #2e2c75;
+}
+.raffle_product, .raffle_product:hover, .raffle_product:active{
+    color: #fff;
+    padding: 7px 5px;
+    background: #2e2c75;
+    margin: 10px;
+    border-color: #2e2c75;
+}
+.card_shadow{
+    box-shadow: 0px 0px 10px 0px #0000004d;
+    margin: 30px 0;
+    padding: 30px;
+    border-radius: 10px;
+}
+button:focus{
+    outline: none;
+}
+.shopsettingbtn, .shopsettingbtn:hover, .shopsettingbtn:active{
+    background: #2D2B75;
+    color: white; 
+    float: right;
+    margin-bottom: 10px;
+
+}
+
+.shopsettingback, .shopsettingback:hover, .shopsettingback:active{
+    background: #2D2B75;
+    color: white; 
+
+}
+
+.raffleTableHead{
+    background-color: #2D2B75;
+    color: white;
+    word-wrap: break-word;
+}
+
+.raffleth{
+    text-align: center;
+    word-wrap: break-word;
+}
+
+
+/* media */
+@media screen and (max-width: 480px) and (min-width: 300px){
+.list-inline>li {
+    float: left;
+    margin-left: 5px;
+}
+.navbar-light .navbar-nav .nav-link{
+    text-align: center;
+}
+}

@@ -2,6 +2,7 @@
 
 class Product < ApplicationRecord
   belongs_to :shop
+  has_many :variants
 
   validates :shopify_product_title, presence: true
   validates :shopify_product_id, numericality: { greater_than: 0 }, presence: true

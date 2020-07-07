@@ -1,4 +1,5 @@
-<%= form_with(model: setting, local: true) do |form| %>
+<%= form_with(model: setting, local: true,:html => {:id => "settingForm"}) do |form| %>
+
   <% if setting.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(setting.errors.count, "error") %> prohibited this setting from being saved:</h2>
@@ -11,37 +12,269 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :shop_id %>
-    <%= form.number_field :shop_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :email_body_for_winner %>
-    <%= form.text_area :email_body_for_winner %>
-  </div>
-
-  <div class="field">
-    <%= form.label :email_body_for_participant %>
-    <%= form.text_area :email_body_for_participant %>
-  </div>
-
-  <div class="field">
-    <%= form.label :email_body_for_registration %>
-    <%= form.text_area :email_body_for_registration %>
-  </div>
-
-  <div class="field">
-    <%= form.label :email_body_for_customer_registration_verification %>
-    <%= form.text_area :email_body_for_customer_registration_verification %>
-  </div>
-
-  <div class="field">
-    <%= form.label :purchase_window %>
-    <%= form.number_field :purchase_window %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+<section>
+    <div class="container">
+        <form class="card_shadow">
+            <div class="row">
+            <div class="col-sm-6">
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Email body for Winner:</label>
+                <%= form.text_area :email_body_for_winner,:class => "form-control",:id => 'emailBodyWinner',:rows =>"3" %>
+                <span id="emailBodyWinnerError"></span>
+                
+                <button type="button" class = "btn raffle_product" id="customer_name_winner">Add Customer Name</button>
+                <button type="button" class = "btn raffle_product" id="raffle_product_winner">Add Raffle Product Name</button> 
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Email body for Participant:</label>
+                 <%= form.text_area :email_body_for_participant,:class => "form-control",:id => 'emailBodyParticipant',:rows =>"3" %>
+                 <span id="emailBodyParticipantError"></span>
+                
+                <button type="button" class = "btn raffle_product" id="customer_name_participant">Add Customer Name</button> 
+                <button type="button" class = "btn raffle_product" id="raffle_product_participant">Add Raffle Product Name</button>  
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Select Number of Runner-ups:</label>
+              <%= form.number_field :number_of_runner, :class => "form-control" %>
+              <span id="runnerUpError"></span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Email body for Registration:</label>
+                <%= form.text_area :email_body_for_registration,:class => "form-control",:id => 'emailBodyRegistration',:rows =>"3" %> 
+                <span id="emailBodyRegistrationError"></span>
+                <button type="button" class = "btn raffle_product" id="customer_name_registration">Add Customer Name</button> 
+            </div>
+            
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Email body for Registration Verification:</label>
+                <%= form.text_area :email_body_for_customer_registration_verification,:class => "form-control",:id => 'emailBodyRegistrationVerification',:rows =>"3" %>
+                <span id="emailBodyRegistrationVerificationError"></span>
+                <button type="button" class = "btn raffle_product" id="customer_name_registration_verification">Add Customer Name</button> 
+  
+            </div>
+        
+            <div class="form-group">
+           
+              <label for="exampleFormControlSelect1">Purchase Link Time Span:</label>
+              <%= form.number_field :purchase_window,:class => "form-control", :min => "1",:placeholder => "Hr"%>
+              <span id="purchaseWindowError"></span>
+            </div>
+          </div>
+          </div><!--row-->
+          <div class="text-center">
+            <div class="actions">
+            <%= form.submit :class => "btn raffle_submit",id: "submitSettingForm"%>
+            <%= link_to 'Back', settings_path, :class => "btn shopsettingback" %>
+            
+          </div>
+          </form>
+    </div>
+</section>
 <% end %>
+
+<script>
+  
+  var cusrsorPosition = null;
+  var formHandle = document.getElementById('settingForm');
+  var submitHandle = document.getElementById('submitSettingForm');
+  var emailBodyWinner = document.getElementById('emailBodyWinner');
+  var emailBodyParticipant = document.getElementById('emailBodyParticipant');
+  var emailBodyRegistration = document.getElementById('emailBodyRegistration');
+  var emailBodyRegistrationVerification = document.getElementById('emailBodyRegistrationVerification');
+  var runnerUpHandle = document.getElementById('setting_number_of_runner');
+  var purchaseWindowHandle = document.getElementById('setting_purchase_window');
+
+  var emailBodyWinnerErrorHandle = document.getElementById('emailBodyWinnerError');
+  var emailBodyParticipantErrorHandle = document.getElementById('emailBodyParticipantError');
+  var runnerUpErrorHandle = document.getElementById('runnerUpError');
+  var emailBodyRegistrationErrorHandle = document.getElementById('emailBodyRegistrationError');
+  var emailBodyRegistrationVerificationErrorHandle = document.getElementById('emailBodyRegistrationVerificationError');
+  var purchaseWindowErrorHandle = document.getElementById('purchaseWindowError');
+  
+  var validator = {
+    winnerEmailValid: false,
+    participantEmailValid: false,
+    runnerUpValid: false,
+    registrationEmailValid: false,
+    registrationVerificationEmailValid: false,
+    purchaseWindowValid: false
+   }
+
+   function checkBlank(){
+    if (emailBodyWinner.value === ""){
+      emailBodyWinnerErrorHandle.innerHTML = "Can't be blank";
+      validator.winnerEmailValid = false ;
+      }
+      else{
+        validator.winnerEmailValid = true;
+        emailBodyWinnerErrorHandle.innerHTML = " ";
+
+      }
+     if(emailBodyParticipant.value === ""){
+      emailBodyParticipantErrorHandle.innerHTML = "Can't be blank";
+      validator.participantEmailValid = false;
+      
+    }
+    else{
+      validator.participantEmailValid = true;
+      emailBodyParticipantErrorHandle.innerHTML = " ";
+
+    }
+    if(emailBodyRegistration.value === ""){
+      emailBodyRegistrationErrorHandle.innerHTML = "Can't be blank";
+      validator.registrationEmailValid = false;
+      
+    }
+    else{
+      validator.registrationEmailValid = true;
+      emailBodyRegistrationErrorHandle.innerHTML = " ";
+    }
+    if(emailBodyRegistrationVerification.value === ""){
+      emailBodyRegistrationVerificationErrorHandle.innerHTML = "Can't be blank";
+      validator.registrationVerificationEmailValid = false;
+      
+    }
+    else{
+      validator.registrationVerificationEmailValid = true;
+      emailBodyRegistrationVerificationErrorHandle.innerHTML = " ";
+    }
+    if(runnerUpHandle.value === ""){
+      runnerUpErrorHandle.innerHTML = "Can't be blank";
+      validator.runnerUpValid = false;
+      
+    }
+    else{
+      validator.runnerUpValid = true;
+      runnerUpErrorHandle.innerHTML = " ";
+    }
+    if(purchaseWindowHandle.value === ""){
+      purchaseWindowErrorHandle.innerHTML = "Can't be blank";
+      validator.purchaseWindowValid = false;
+      
+    }
+    else{
+      validator.purchaseWindowValid = true;
+      purchaseWindowErrorHandle.innerHTML = " ";
+           
+      }
+
+    }
+
+    formHandle.addEventListener('submit',function(e){
+     checkBlank();
+     
+      if(Object.values(validator).includes(false)){
+      e.preventDefault();
+      setTimeout(function(){
+        submitHandle.disabled = false;
+      },100);
+    }
+  },true);
+
+
+
+
+
+  $(emailBodyWinner).on('keydown', function(event) {
+    if (event.keyCode === 9) {
+      var v = this.value;
+      s = this.selectionStart;
+      e = this.selectionEnd;
+      this.value = v.substring(0, s) + '\t' + v.substring(e);
+      this.selectionStart = this.selectionEnd = s + 1;
+      return false;
+    }
+  });
+  $(emailBodyParticipant).on('keydown', function(event) {
+    if (event.keyCode === 9) {
+      var v = this.value;
+      s = this.selectionStart;
+      e = this.selectionEnd;
+      this.value = v.substring(0, s) + '\t' + v.substring(e);
+      this.selectionStart = this.selectionEnd = s + 1;
+      return false;
+    }
+  });
+  $(emailBodyRegistration).on('keydown', function(event) {
+    if (event.keyCode === 9) {
+      var v = this.value;
+      s = this.selectionStart;
+      e = this.selectionEnd;
+      this.value = v.substring(0, s) + '\t' + v.substring(e);
+      this.selectionStart = this.selectionEnd = s + 1;
+      return false;
+    }
+  });
+   $(emailBodyRegistrationVerification).on('keydown', function(event) {
+    if (event.keyCode === 9) {
+      var v = this.value;
+      s = this.selectionStart;
+      e = this.selectionEnd;
+      this.value = v.substring(0, s) + '\t' + v.substring(e);
+      this.selectionStart = this.selectionEnd = s + 1;
+      return false;
+    }
+  });
+
+  $(emailBodyWinner).on('mouseup keyup', function(e) {
+    cusrsorPosition = $(this).caret();
+    // console.log($(this).caret());
+  });
+  $(emailBodyParticipant).on('mouseup keyup', function(e) {
+    cusrsorPosition = $(this).caret();
+    // console.log($(this).caret());
+  });
+  $(emailBodyRegistration).on('mouseup keyup', function(e) {
+    cusrsorPosition = $(this).caret();
+    // console.log($(this).caret());
+  });
+    $(emailBodyRegistrationVerification).on('mouseup keyup', function(e) {
+    cusrsorPosition = $(this).caret();
+    // console.log($(this).caret());
+  });
+
+  $('#customer_name_winner').click(function(e) {
+    $(emailBodyWinner).caret(cusrsorPosition);
+    let frontText = (emailBodyWinner.value).substring(0, cusrsorPosition).trim();
+    let endText = (emailBodyWinner.value).substring(cusrsorPosition, emailBodyWinner.value.length).trim();
+    emailBodyWinner.value = frontText + ' {Your customer name will be replaced here} ' + endText;
+  });
+
+  $('#raffle_product_winner').click(function(e) {
+    $(emailBodyWinner).caret(cusrsorPosition);
+    let frontText = (emailBodyWinner.value).substring(0, cusrsorPosition).trim();
+    let endText = (emailBodyWinner.value).substring(cusrsorPosition, emailBodyWinner.value.length).trim();
+    emailBodyWinner.value = frontText + ' {Raffle products will be replaced here} ' + endText;
+  });
+
+  $('#customer_name_participant').click(function(e) {
+    $(emailBodyParticipant).caret(cusrsorPosition);
+    let frontText = (emailBodyParticipant.value).substring(0, cusrsorPosition).trim();
+    let endText = (emailBodyParticipant.value).substring(cusrsorPosition, emailBodyParticipant.value.length).trim();
+    emailBodyParticipant.value = frontText + ' {Your customer name will be replaced here} ' + endText;
+  });
+
+  $('#raffle_product_participant').click(function(e) {
+    $(emailBodyParticipant).caret(cusrsorPosition);
+    let frontText = (emailBodyParticipant.value).substring(0, cusrsorPosition).trim();
+    let endText = (emailBodyParticipant.value).substring(cusrsorPosition, emailBodyParticipant.value.length).trim();
+    emailBodyParticipant.value = frontText + ' {Raffle products will be replaced here} ' + endText;
+  });
+
+  $('#customer_name_registration').click(function(e) {
+    $(emailBodyRegistration).caret(cusrsorPosition);
+    let frontText = (emailBodyRegistration.value).substring(0, cusrsorPosition).trim();
+    let endText = (emailBodyRegistration.value).substring(cusrsorPosition, emailBodyRegistration.value.length).trim();
+    emailBodyRegistration.value = frontText + ' {Your customer name will be replaced here} ' + endText;
+  });
+
+  $('#customer_name_registration_verification').click(function(e) {
+    $(emailBodyRegistrationVerification).caret(cusrsorPosition);
+    let frontText = (emailBodyRegistrationVerification.value).substring(0, cusrsorPosition).trim();
+    let endText = (emailBodyRegistrationVerification.value).substring(cusrsorPosition, emailBodyRegistrationVerification.value.length).trim();
+    emailBodyRegistrationVerification.value = frontText + ' {Your customer name will be replaced here} ' + endText;
+  });
+
+  </script> 
