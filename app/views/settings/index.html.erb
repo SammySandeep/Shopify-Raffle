@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+
+<div class="container">
+  <h3><center>Settings Page </center></h3> 
+  <%if @setting.nil?%>
+    <%= button_to "New Setting", new_setting_path,:class => "raffle_btn",:style => "float:right", :method => :get%>
+  <% end %>
+
+<table class="table table-responsive-sm table-striped table-bordered">
+  <thead class="raffleTableHead">
+    <tr>
+      <th class="raffleth">Email Body for Winner</th>
+      <th class="raffleth">Email Body for Participant</th>
+      <th class="raffleth">Email Body for Registration</th>
+      <th class="raffleth">Email Body for Customer Registration Verification</th>
+      <th class="raffleth">Runner Ups</th>
+      <th class="raffleth">Purchase Window</th>
+      <th class="raffleth">Edit</th>
+      <th class="raffleth">Delete</th>
+    </tr>
+  </thead>
+
+  <tbody >
+    <%if @setting.nil?%>
+    <% else %>
+      <tr>
+        <td><%= @setting.email_body_for_winner %></td>
+        <td><%= @setting.email_body_for_participant %></td>
+        <td><%= @setting.email_body_for_registration %></td>
+        <td><%= @setting.email_body_for_customer_registration_verification %></td>
+        <td><%= @setting.purchase_window %></td>
+        <td><%= @setting.number_of_runner %></td>
+        <td><%= link_to '<i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:20px; color:blue;"></i>'.html_safe, edit_setting_path(@setting) %></td>
+        <td><%= link_to '<i class="fa fa-times" aria-hidden="true" style="font-size:20px; color:red;"></i>'.html_safe,@setting, method: :delete,data: {   confirm: 'Are you sure you want to delete?'} %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
