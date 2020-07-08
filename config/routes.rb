@@ -2,7 +2,9 @@
 
 require 'sidekiq/web'
 Rails.application.routes.draw do
+  get 'contents/home'
   root to: 'home#index'
+  resources :settings
   mount ShopifyApp::Engine, at: '/'
 
   get 'raffles', to: 'raffles#index'

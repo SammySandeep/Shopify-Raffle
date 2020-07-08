@@ -29,14 +29,16 @@ class ShopifyApp::Webhooks::CustomersController < ApplicationController
     def delete_customer
       @customer = Customer.find_by(shopify_customer_id: customer_params[:id].to_s)
       @customer.delete
+      head :ok
     end
     
     def customer_params
       params.permit(:id, :first_name, :last_name, :email).to_h  
     end
+
     private
-    
+  
     def get_shop
-        Shop.find_by(shopify_domain: request.headers['HTTP_X_SHOPIFY_SHOP_DOMAIN'])
+      Shop.find_by(shopify_domain: request.headers['HTTP_X_SHOPIFY_SHOP_DOMAIN'])
     end
 end  
