@@ -2,7 +2,14 @@
 
 class RafflesController < HomeController
   def index
-    @raffles = Raffle.all
+    shop = Shop.find_by(shopify_domain: session['shopify.omniauth_params']['shop'])
+    products = shop.products
+    @raffles = Array.new
+    products.each do |product|
+      product.variants.each do |variant|
+        @raffles.push(variant.raffle)  
+      end
+    end
   end
 
   def show_participant_customers
