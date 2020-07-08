@@ -12,7 +12,7 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
   end
 
   def update
-    @product = Product.find_by(shopify_product_id: product_params[:id], status: 'pending')
+    @product = find_product_by_shopify_product_id_and_status_pending
 
     if @product.nil?
       if product_eligible_for_raffle
@@ -32,6 +32,7 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
         variant = create_variant(variant, @product.id)
         create_raffle(variant)
       else
+        binding.pry
         @variant.title = variant[:title]
         @variant.product_id = @product.id
         @variant.inventory_quantity = variant[:inventory_quantity]
@@ -45,10 +46,51 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
         @raffle.save
       end
     end
+    check_variant_removed_in_shopify
     head :ok
   end
 
+  def destroy
+    product = find_product_by_shopify_product_id_and_status_pending
+    product.variants.each do |variant|
+      delete_variant_raffle variant
+    end
+    product.delete
+  end
+
   private
+
+  def check_variant_removed_in_shopify
+    @product.variants.each do |saved_variant|
+      variant_found = false
+      product_params[:variants].each do |shopify_variant|
+        if saved_variant.shopify_variant_id	== shopify_variant[:id]
+          variant_found = true
+          break
+        end
+      end
+      unless variant_found
+        delete_variant_raffle saved_variant
+      end
+    end
+  end
+
+  def delete_variant_raffle variant
+    raffle = find_raffle_by_variant_id variant.id
+    delete_results_participants raffle
+    raffle.delete
+    variant.delete
+  end
+
+  def delete_results_participants raffle
+    raffle.results do |result|
+      result.delete
+    end
+  end
+
+  def find_product_by_shopify_product_id_and_status_pending
+    Product.find_by(shopify_product_id: product_params[:id], status: 'pending')
+  end
 
   def find_raffle_by_variant_id(variant_id)
     Raffle.find_by(variant_id: variant_id)
