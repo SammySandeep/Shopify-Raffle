@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   post '/shopify_app/webhooks/order_upadte_participant_chance', to: 'shopify_app/webhooks/orders#order_upadte_participant_chance'
   post '/shopify_app/webhooks/create_customer', to: 'shopify_app/webhooks/customers#create_customer'
   post '/shopify_app/webhooks/update_customer', to: 'shopify_app/webhooks/customers#update_customer'
+  post '/shopify_app/webhooks/delete_customer', to: 'shopify_app/webhooks/customers#delete_customer'
 
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == ENV['ADMIN_NAME'] && password == ENV['ADMIN_PASSWORD']

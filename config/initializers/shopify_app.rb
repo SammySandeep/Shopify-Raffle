@@ -16,7 +16,8 @@ ShopifyApp.configure do |config|
     { topic: 'products/update', address: "#{ENV['URL']}/shopify_app/webhooks/update", format: 'json' },
     { topic: 'orders/create', address: "#{ENV['URL']}/shopify_app/webhooks/order_upadte_participant_chance", format: 'json'},
     { topic: 'customers/create', address: "#{ENV['URL']}/shopify_app/webhooks/create_customer", format: 'json' },
-    { topic: 'customers/update', address: "#{ENV['URL']}/shopify_app/webhooks/update_customer", format: 'json' }
+    { topic: 'customers/update', address: "#{ENV['URL']}/shopify_app/webhooks/update_customer", format: 'json' },
+    { topic: 'customers/delete', address: "#{ENV['URL']}/shopify_app/webhooks/delete_customer", format: 'json' }
     ]
 end
 
