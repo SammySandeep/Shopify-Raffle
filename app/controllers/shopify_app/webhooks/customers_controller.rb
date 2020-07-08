@@ -29,6 +29,7 @@ class ShopifyApp::Webhooks::CustomersController < ApplicationController
     def delete_customer
       @customer = Customer.find_by(shopify_customer_id: customer_params[:id].to_s)
       @customer.delete
+      head :ok
     end
     
     def customer_params
