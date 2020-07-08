@@ -12,7 +12,7 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
   end
 
   def update
-    @product = Product.find_by(shopify_product_id: product_params[:id], status: 'pending')
+    @product = find_product_by_shopify_product_id_and_status_pending
 
     if @product.nil?
       if product_eligible_for_raffle
@@ -24,8 +24,7 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
     end
     @product.shopify_product_title = product_params[:title]
     @product.has_variant = product_params[:variants].first[:title] != 'Default Title'
-    @product.save
-
+    @tags = product_params[:tags].split(',').collect { |tag| tag.strip.downcase }
     product_params[:variants].each do |variant|
       @variant = Variant.find_by(shopify_variant_id: variant[:id])
       if @variant.nil?
@@ -37,7 +36,6 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
         @variant.inventory_quantity = variant[:inventory_quantity]
         @variant.save
         @raffle = find_raffle_by_variant_id(@variant.id)
-        @tags = product_params[:tags].split(',').collect { |tag| tag.strip.downcase }
         launch_date = manipulate_launch_date
         @raffle.title = product_params[:title].gsub(' ', '') + '_' + variant[:title].gsub(' ', '')
         @raffle.launch_date_time = DateTime.civil(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i)
@@ -45,10 +43,38 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
         @raffle.save
       end
     end
+    check_variant_removed_in_shopify
     head :ok
   end
 
+  def destroy_only_pending_raffle
+    product = find_product_by_shopify_product_id_and_status_pending
+    if !product.nil?
+      product.destroy
+    end
+  end
+
   private
+  
+  # try to move in model using callbacks
+  def check_variant_removed_in_shopify
+    @product.variants.each do |saved_variant|
+      variant_found = false
+      product_params[:variants].each do |shopify_variant|
+        if saved_variant.shopify_variant_id	== shopify_variant[:id]
+          variant_found = true
+          break
+        end
+      end
+      if !variant_found
+        saved_variant.destroy
+      end
+    end
+  end
+
+  def find_product_by_shopify_product_id_and_status_pending
+    Product.find_by(shopify_product_id: product_params[:id], status: 'pending')
+  end
 
   def find_raffle_by_variant_id(variant_id)
     Raffle.find_by(variant_id: variant_id)
@@ -102,8 +128,7 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
     launch_date = manipulate_launch_date
     Raffle.create(
       title: product_params[:title].gsub(' ', '') + '_' + variant[:title].gsub(' ', ''),
-      launch_date_time: DateTime.civil(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i,
-        launch_date[3].to_i, launch_date[4].to_i),
+      launch_date_time: DateTime.civil(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i),
       delivery_method: @tags.include?('online') ? 'online' : 'offline',
       variant_id: variant.id
     )

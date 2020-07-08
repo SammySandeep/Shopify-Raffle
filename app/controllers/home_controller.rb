@@ -3,7 +3,6 @@
 class HomeController < AuthenticatedController
   layout 'application'
   def index
-
   end
 
 end
