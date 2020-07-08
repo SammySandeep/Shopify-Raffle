@@ -1,4 +1,4 @@
-class SettingsController < ApplicationController
+class SettingsController < HomeController
   
     before_action :set_setting, only: [:show, :edit, :update, :destroy]
   

@@ -32,7 +32,6 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
         variant = create_variant(variant, @product.id)
         create_raffle(variant)
       else
-        binding.pry
         @variant.title = variant[:title]
         @variant.product_id = @product.id
         @variant.inventory_quantity = variant[:inventory_quantity]
@@ -52,10 +51,12 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
 
   def destroy
     product = find_product_by_shopify_product_id_and_status_pending
-    product.variants.each do |variant|
-      delete_variant_raffle variant
+    if !product.nil?
+      product.variants.each do |variant|
+        delete_variant_raffle variant
+      end
+      product.delete
     end
-    product.delete
   end
 
   private
@@ -144,8 +145,7 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
     launch_date = manipulate_launch_date
     Raffle.create(
       title: product_params[:title].gsub(' ', '') + '_' + variant[:title].gsub(' ', ''),
-      launch_date_time: DateTime.civil(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i,
-        launch_date[3].to_i, launch_date[4].to_i),
+      launch_date_time: DateTime.civil(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i),
       delivery_method: @tags.include?('online') ? 'online' : 'offline',
       variant_id: variant.id
     )
