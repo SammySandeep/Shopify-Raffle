@@ -34,8 +34,8 @@ before_script:
 build:
   stage: build
   script:
-   - docker pull registry.klocapps.com/shopify/shopify-kloc-raffle || true
-   - docker build --cache-from registry.klocapps.com/shopify/shopify-kloc-raffle --tag $CONTAINER_IMAGE .
+   - docker pull registry.klocapps.com/shopify/shopify-kloc-raffle:971f9517 || true
+   - docker build --cache-from registry.klocapps.com/shopify/shopify-kloc-raffle:971f9517 --tag $CONTAINER_IMAGE .
    - docker push $CONTAINER_IMAGE
   <<: *only-default
 
