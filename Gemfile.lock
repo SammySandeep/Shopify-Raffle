@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/influxdata/influxdb-rails/
+  revision: b51ea565c42c423c79f1e66df7c5e890c939877d
+  branch: master
+  specs:
+    influxdb-rails (1.0.0)
+      influxdb (~> 0.6, >= 0.6.4)
+      railties (>= 5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -110,6 +119,7 @@ GEM
     hirb (0.7.3)
     i18n (1.8.3)
       concurrent-ruby (~> 1.0)
+    influxdb (0.8.0)
     io-like (0.3.1)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
@@ -303,6 +313,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   dotenv-rails
   hirb
+  influxdb-rails!
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   pg (>= 0.18, < 2.0)
