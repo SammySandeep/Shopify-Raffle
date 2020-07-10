@@ -29,17 +29,22 @@
                       <td>Name</td>
                       <td>Email</td>
                       <td>Address</td>
+                      <td>Phone</td>
                       <td>Notify</td>
                       
                   </tr>
                   <tr>
                       <td><%= @winner_customer.first_name + ' ' + @winner_customer.last_name %></td>
                       <td><%= @winner_customer.email_id %></td>
-                      <td> <% @customer_address = @winner_customer.address %>
-                           <% unless @customer_address.nil? %>
-                              <%= simple_format(@customer_address.line1 + '<br/>' + @customer_address.line2 + '<br/>' + @customer_address.city + '&nbsp;' + @customer_address.country + '&nbsp;' + @customer_address.state  + '&nbsp;' + @customer_address.pin.to_s) %>
-                            <% end %>
-                      </td>
+                      <% customer_address = Address.find_by(customer_id: @winner_customer.id, raffle_id: @raffle.id) %>
+                        <% unless customer_address.nil? %>
+                        <td> 
+                          <%= simple_format(customer_address.address + '<br/>' + customer_address.city + '&nbsp;' + customer_address.country + '&nbsp;' + customer_address.state  + '&nbsp;' + customer_address.pin.to_s) %>
+                        </td>
+                        <td>
+                          <%= customer_address.phone %>  
+                        </td>
+                        <% end %>
                       <td><a href="#" class="raffle_btn">Notify</a></td>
                     
                   </tr>
@@ -59,17 +64,22 @@
                     <td>Name</td>
                     <td>Email</td>
                     <td>Address</td>
+                    <td>Phone</td>
                     <td>Notify</td>
                 </tr>
                  <% @runner_customers.each do |customer| %>
                 <tr>
                   <td><%= customer.first_name + ' ' + customer.last_name %></td>
                   <td><%= customer.email_id %></td>
-                  <td> <% @customer_address = customer.address %>
-                       <% unless @customer_address.nil? %>
-                           <%= simple_format(@customer_address.line1 + '<br/>' + @customer_address.line2 + '<br/>' + @customer_address.city + '&nbsp;' + @customer_address.country + '&nbsp;' + @customer_address.state  + '&nbsp;' + @customer_address.pin.to_s) %>
-                        <% end %>
-                  </td>
+                  <% customer_address = Address.find_by(customer_id: customer.id, raffle_id: @raffle.id) %>
+                    <% unless customer_address.nil? %>
+                        <td>
+                          <%= simple_format(customer_address.address + '<br/>' + customer_address.city + '&nbsp;' + customer_address.country + '&nbsp;' + customer_address.state  + '&nbsp;' + customer_address.pin.to_s) %>
+                        </td>
+                        <td>
+                          <%= customer_address.phone %>  
+                        </td>
+                    <% end %>
                   <td><a href="#" class="raffle_btn">Notify</a></td>
                 </tr>
                 <% end %>
