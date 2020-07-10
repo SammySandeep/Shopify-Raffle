@@ -8,7 +8,7 @@ class Customers::SelectRaffleCustomers
     Product.where(status: 'pending').each do |product|
       product.variants.each do |variant|
         raffle = variant.raffle
-        if DateTime.now.change(sec: 0, offset: 0) == raffle.launch_date_time
+        if DateTime.now.change(sec: 0, offset: 0) >= raffle.launch_date_time && !Setting.first.nil?
           do_raffle(raffle)
         end
       end

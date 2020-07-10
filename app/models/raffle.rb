@@ -6,6 +6,8 @@ class Raffle < ApplicationRecord
   has_many :results, dependent: :destroy
   has_many :customers, through: :results
 
+  has_many :addresses, dependent: :destroy
+
   validates :title, presence: true
   validates :delivery_method, inclusion: { in: ['online', 'offline', nil] }
 end
