@@ -17,6 +17,11 @@ Rails.application.routes.draw do
     get 'registrations/register_customer', to: 'registers#register_customer'
   end
 
+  get 'raffles/send_mail_winner/:id', to: 'raffles#send_mail_winner', as: 'raffle_send_mail_winner'
+  get 'raffles/send_mail_runner/:id', to: 'raffles#send_mail_runner', as: 'raffle_send_mail_runner'
+  get 'raffles/send_mail_participants/:id', to: 'raffles#send_mail_participants', as: 'raffle_send_mail_participants'
+  
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   post '/shopify_app/webhooks/create', to: 'shopify_app/webhooks/products#create'
   post '/shopify_app/webhooks/update', to: 'shopify_app/webhooks/products#update'
   post '/shopify_app/webhooks/destroy_only_pending_raffle', to: 'shopify_app/webhooks/products#destroy_only_pending_raffle'
