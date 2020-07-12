@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2020_07_10_103928) do
     t.string "delivery_method"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "inventory"
+    t.integer "inventory", default: 0
     t.integer "variant_id"
   end
 
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 2020_07_10_103928) do
 
   create_table "variants", force: :cascade do |t|
     t.string "title"
-    t.integer "inventory_quantity"
+    t.integer "inventory_quantity", default: 0
     t.integer "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

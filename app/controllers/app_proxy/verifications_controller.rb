@@ -13,7 +13,8 @@ class AppProxy::VerificationsController < ApplicationController
     return if !validate_email_for_already_registered_or_customer_chance_over customer
 
     if !customer.verified
-      create_or_update_customer_verification customer
+      customer_dix_digit_otp = create_or_update_customer_verification customer
+      WinnerMailer.send_otp_mail(customer.email_id, customer_dix_digit_otp).deliver_now
       head 200
     else
       head 202
@@ -25,7 +26,6 @@ class AppProxy::VerificationsController < ApplicationController
   # status of 401 wrong OTP
   def verify_otp
     customer = find_customer_by_email_id_for_verify_otp
-    binding.pry
     decrypted_data = decrypt_customer_otp_from_db customer
     if decrypted_data == verification_params_for_verify_otp[:code]
       customer_expiration_date_time = find_customer_verification_code_expiration_date_time customer
@@ -45,7 +45,6 @@ class AppProxy::VerificationsController < ApplicationController
 
   def create_or_update_customer_verification customer
     random_six_digit_number = SecureRandom.random_number(999999).to_s
-    binding.pry
     customer_verification = customer.verification
     if customer_verification.nil?
       create_verification(random_six_digit_number, customer.id)
@@ -53,6 +52,7 @@ class AppProxy::VerificationsController < ApplicationController
       customer_verification.code = random_six_digit_number
       customer_verification.save
     end
+    return random_six_digit_number
   end
 
   def validate_email_for_already_registered_or_customer_chance_over customer

@@ -2,7 +2,7 @@
 class AppProxy::RegistersController < ApplicationController
   before_action :registers_customer_params, only: %i[register_customer]
   def register_customer
-    customer = find_customer_by_email 
+    customer = find_customer_by_email
     raffle = find_variant_by_shopify_variant_id.raffle
     create_address(customer.id, raffle.id)
     head 200
@@ -24,7 +24,10 @@ class AppProxy::RegistersController < ApplicationController
   end
 
   def find_variant_by_shopify_variant_id
-    Variant.find_by(shopify_variant_id: registers_customer_params[:variant_id])
+    variants = Variant.where(shopify_variant_id: registers_customer_params[:variant_id])
+    variants.each do |variant|
+      return variant if variant.product.status == 'pending'
+    end
   end
 
   def registers_customer_params

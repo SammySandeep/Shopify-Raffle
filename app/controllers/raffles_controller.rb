@@ -39,10 +39,9 @@ class RafflesController < HomeController
     product = @raffle.variant.product
     product_title = product.shopify_product_title
     WinnerMailer.send_winner_mail(runner_customer_name,product_title,runner_customer_email).deliver_now
-    format.html { respond_to show_winner_and_runner_customers_path(@raffle.id), notice: 'Mail Triggered Successfully!' }
-
+    respond_to show_winner_and_runner_customers_path(@raffle.id), notice: 'Mail Triggered Successfully!'
   end
-  
+
   def send_mail_winner
     @raffle = Raffle.find(raffle_params[:id])
     @raffle.inventory -= 1
@@ -54,10 +53,10 @@ class RafflesController < HomeController
     winner_email = winner_customer_info.email_id
     product = @raffle.variant.product
     product_title = product.shopify_product_title
-    WinnerMailer.send_winner_mail(winner_full_name,product_title,winner_email).deliver_now
-    format.html { respond_to show_winner_and_runner_customers_path(@raffle.id), notice: 'Mail Triggered Successfully!' }
-
+    WinnerMailer.send_winner_mail(winner_full_name,product_title, winner_email).deliver_now
+    redirect_to show_winner_and_runner_customers_path(@raffle.id), notice: 'Mail Triggered Successfully!'
   end
+
   def send_mail_participants
     @raffle = Raffle.find(raffle_params[:id])
     product = @raffle.variant.product
@@ -68,9 +67,7 @@ class RafflesController < HomeController
       customer_full_name = customer.first_name + ' ' + customer.last_name
       customer_email = customer.email_id
       WinnerMailer.send_participants_mail(customer_full_name,product_title,customer_email).deliver_now
-      
     end
-  
   end
 
   private
