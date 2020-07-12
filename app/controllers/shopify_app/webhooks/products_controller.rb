@@ -52,10 +52,11 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
     if !product.nil?
       product.destroy
     end
+    head :ok
   end
 
   private
-  
+
   # try to move in model using callbacks
   def check_variant_removed_in_shopify
     @product.variants.each do |saved_variant|

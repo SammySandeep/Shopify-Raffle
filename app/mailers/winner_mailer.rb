@@ -23,6 +23,11 @@ class WinnerMailer < ApplicationMailer
 
     end
 
+    def send_otp_mail(customer_mail, six_digit_otp)
+        @body = 'your OTP for raffle is ' + six_digit_otp.to_s
+        mail to: customer_mail, subject: 'OTP'
+    end
+
 
     
 end

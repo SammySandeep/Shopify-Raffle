@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_04_074554) do
+ActiveRecord::Schema.define(version: 2020_07_10_103928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.string "line1"
-    t.string "line2"
+    t.string "address"
     t.string "city"
     t.string "country"
     t.string "state"
@@ -25,6 +24,8 @@ ActiveRecord::Schema.define(version: 2020_07_04_074554) do
     t.integer "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "phone"
+    t.integer "raffle_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -36,6 +37,7 @@ ActiveRecord::Schema.define(version: 2020_07_04_074554) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "default_participant_chance", default: 0
+    t.boolean "verified", default: false
   end
 
   create_table "products", force: :cascade do |t|
@@ -54,7 +56,7 @@ ActiveRecord::Schema.define(version: 2020_07_04_074554) do
     t.string "delivery_method"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "inventory"
+    t.integer "inventory", default: 0
     t.integer "variant_id"
   end
 
@@ -88,11 +90,18 @@ ActiveRecord::Schema.define(version: 2020_07_04_074554) do
 
   create_table "variants", force: :cascade do |t|
     t.string "title"
-    t.integer "inventory_quantity"
+    t.integer "inventory_quantity", default: 0
     t.integer "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "shopify_variant_id"
+  end
+
+  create_table "verifications", force: :cascade do |t|
+    t.string "code"
+    t.integer "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

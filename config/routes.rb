@@ -10,10 +10,17 @@ Rails.application.routes.draw do
   get 'raffles', to: 'raffles#index'
   get 'raffles/show_participant_customers/:id', to: 'raffles#show_participant_customers', as: 'raffle_show_participant_customers'
   get 'raffles/show_winner_and_runner_customers/:id', to: 'raffles#show_winner_and_runner_customers', as: 'show_winner_and_runner_customers'
+
+  namespace :app_proxy do
+    get 'verifications/send_otp', to: 'verifications#send_otp'
+    get 'verifications/verify_otp', to: 'verifications#verify_otp'
+    get 'registrations/register_customer', to: 'registers#register_customer'
+  end
+
   get 'raffles/send_mail_winner/:id', to: 'raffles#send_mail_winner', as: 'raffle_send_mail_winner'
   get 'raffles/send_mail_runner/:id', to: 'raffles#send_mail_runner', as: 'raffle_send_mail_runner'
   get 'raffles/send_mail_participants/:id', to: 'raffles#send_mail_participants', as: 'raffle_send_mail_participants'
-  
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   post '/shopify_app/webhooks/create', to: 'shopify_app/webhooks/products#create'
   post '/shopify_app/webhooks/update', to: 'shopify_app/webhooks/products#update'
