@@ -24,6 +24,53 @@ class RafflesController < HomeController
     @winner_customer = find_winner_customer winner.customer_id
     runners_results = find_runner_customer_by_raffle_id_and_type_of_customer
     @runner_customers = find_customers runners_results
+  
+  end
+
+  def send_mail_runner
+    raffle_id = params[:raffle_id]
+    customer_id = params[:customer_id]
+    @raffle = Raffle.find_by(id: raffle_id)
+    @raffle.inventory -= 1
+    @raffle.save
+    runner_customer = Customer.find_by(id: customer_id)
+    runner_customer_name = runner_customer.first_name + ' ' + runner_customer.last_name
+    runner_customer_email = runner_customer.email_id
+    product = @raffle.variant.product
+    product_title = product.shopify_product_title
+    WinnerMailer.send_winner_mail(runner_customer_name,product_title,runner_customer_email).deliver_now
+    format.html { respond_to show_winner_and_runner_customers_path(@raffle.id), notice: 'Mail Triggered Successfully!' }
+
+  end
+  
+  def send_mail_winner
+    @raffle = Raffle.find(raffle_params[:id])
+    @raffle.inventory -= 1
+    @raffle.save
+    winner_customer = Result.find_by(raffle_id: @raffle.id, type_of_customer: 'winner')
+    winner_customer_id = winner_customer.customer_id
+    winner_customer_info = Customer.find_by(id: winner_customer_id)
+    winner_full_name = winner_customer_info.first_name + ' ' + winner_customer_info.last_name 
+    winner_email = winner_customer_info.email_id
+    product = @raffle.variant.product
+    product_title = product.shopify_product_title
+    WinnerMailer.send_winner_mail(winner_full_name,product_title,winner_email).deliver_now
+    format.html { respond_to show_winner_and_runner_customers_path(@raffle.id), notice: 'Mail Triggered Successfully!' }
+
+  end
+  def send_mail_participants
+    @raffle = Raffle.find(raffle_params[:id])
+    product = @raffle.variant.product
+    product_title = product.shopify_product_title
+    results_participant = Result.where(raffle_id: raffle_params[:id], type_of_customer: 'participant')
+    @participant_customers = find_customers results_participant
+    @participant_customers.each do |customer|
+      customer_full_name = customer.first_name + ' ' + customer.last_name
+      customer_email = customer.email_id
+      WinnerMailer.send_participants_mail(customer_full_name,product_title,customer_email).deliver_now
+      
+    end
+  
   end
 
   private
