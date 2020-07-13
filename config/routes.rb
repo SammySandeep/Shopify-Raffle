@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   post '/shopify_app/webhooks/delete_customer', to: 'shopify_app/webhooks/customers#delete_customer'
 
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
-    username == ENV['ADMIN_NAME'] && password == ENV['ADMIN_PASSWORD']
+    username == ENV['REDIS_USERNAME'] && password == ENV['REDIS_PASSWORD']
   end
   mount Sidekiq::Web => '/sidekiq'
   
