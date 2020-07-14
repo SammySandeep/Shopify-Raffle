@@ -31,7 +31,7 @@ before_script:
   only:
     - master
 
-build:
+.build:
   stage: build
   script:
    - docker pull registry.klocapps.com/shopify/shopify-kloc-raffle:971f9517 || true
@@ -47,7 +47,8 @@ deploy_staging:
    - *ssh_definition
    - echo "$S_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
    - *ssh_and_known_host_modification_definition
-   - ssh kloc-admin@174.138.123.31 "sudo echo "TAG=$CI_COMMIT_SHORT_SHA"$'\n'"RAILS_MAX_THREADS=$RAILS_MAX_THREADS"$'\n'"RAFFLE_DATABASE_NAME=$RAFFLE_DATABASE_NAME"$'\n'"RAFFLE_DATABASE_USERNAME=$RAFFLE_DATABASE_USERNAME"$'\n'"RAFFLE_DATABASE_PASSWORD=$RAFFLE_DATABASE_PASSWORD"$'\n'"HOST=$S_HOST"$'\n'"DB_PORT=$DB_PORT"$'\n'"SHOPIFY_API_KEY=$S_SHOPIFY_API_KEY"$'\n'"SHOPIFY_API_SECRET=$S_SHOPIFY_API_SECRET"$'\n'"URL=$URL"$'\n'"REDIS_USERNAME=$REDIS_USERNAME"$'\n'"REDIS_PASSWORD=$REDIS_PASSWORD"$'\n'"REDIS_URL=$REDIS_URL"> .env && sudo docker-compose config && sudo docker-compose up -d && sudo docker-compose run rails bundle exec rake db:create && sudo docker-compose run rails bundle exec rake db:migrate && sudo docker-compose run rails bundle exec sidekiq "
+   - ssh kloc-admin@174.138.123.31 "cd shopify-kloc-raffle/ && git pull"
+#   - ssh kloc-admin@174.138.123.31 "sudo echo "TAG=$CI_COMMIT_SHORT_SHA"$'\n'"RAILS_MAX_THREADS=$RAILS_MAX_THREADS"$'\n'"RAFFLE_DATABASE_NAME=$RAFFLE_DATABASE_NAME"$'\n'"RAFFLE_DATABASE_USERNAME=$RAFFLE_DATABASE_USERNAME"$'\n'"RAFFLE_DATABASE_PASSWORD=$RAFFLE_DATABASE_PASSWORD"$'\n'"HOST=$S_HOST"$'\n'"DB_PORT=$DB_PORT"$'\n'"SHOPIFY_API_KEY=$S_SHOPIFY_API_KEY"$'\n'"SHOPIFY_API_SECRET=$S_SHOPIFY_API_SECRET"$'\n'"URL=$URL"$'\n'"REDIS_USERNAME=$REDIS_USERNAME"$'\n'"REDIS_PASSWORD=$REDIS_PASSWORD"$'\n'"REDIS_URL=$REDIS_URL"> .env && sudo docker-compose config && sudo docker-compose up -d && sudo docker-compose run rails bundle exec rake db:create && sudo docker-compose run rails bundle exec rake db:migrate && sudo docker-compose run rails bundle exec sidekiq "
   environment:
     name: staging
     url: https://$DOMAIN
