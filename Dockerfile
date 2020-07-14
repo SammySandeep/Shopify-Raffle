@@ -14,7 +14,6 @@ RUN gem install bundler
 
 RUN bundle install
 
-COPY . /usr/src/app
 
 RUN gem install rails -v 5.2.4.1
 
