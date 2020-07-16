@@ -1,1 +1,10 @@
 <%= simple_format(@body) %>
+<br>
+<% if @delivery_method == "online" %>
+   <p>Please click the below link to buy the product<p>
+  <%= @url %>
+<% else %>
+  <p>You can buy this product by showing this code in any of our stores!Happy shopping!!<p>
+  <%alphanumeric_code = SecureRandom.alphanumeric(10).to_s %>
+  <%= alphanumeric_code %>
+<% end %>

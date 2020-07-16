@@ -20,7 +20,8 @@ Rails.application.routes.draw do
   get 'raffles/send_mail_winner/:id', to: 'raffles#send_mail_winner', as: 'raffle_send_mail_winner'
   get 'raffles/send_mail_runner/:id', to: 'raffles#send_mail_runner', as: 'raffle_send_mail_runner'
   get 'raffles/send_mail_participants/:id', to: 'raffles#send_mail_participants', as: 'raffle_send_mail_participants'
-
+  get 'links/expiration', to: 'links#expiration', as: 'links_expiration'
+  get 'links/index', to: 'links#index', as: 'links'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   post '/shopify_app/webhooks/create', to: 'shopify_app/webhooks/products#create'
   post '/shopify_app/webhooks/update', to: 'shopify_app/webhooks/products#update'
