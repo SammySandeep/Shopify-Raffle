@@ -79,8 +79,8 @@ class RafflesController < HomeController
       customer_full_name = customer.first_name + ' ' + customer.last_name
       customer_email = customer.email_id
       WinnerMailer.send_participants_mail(customer_full_name,product_title,customer_email).deliver_now
-      redirect_to show_winner_and_runner_customers_path(raffle_id), notice: 'Mail Triggered Successfully!'
     end
+    redirect_to show_winner_and_runner_customers_path(raffle_id), notice: 'Mail Triggered Successfully to all Participants!'
   end
 
   private
