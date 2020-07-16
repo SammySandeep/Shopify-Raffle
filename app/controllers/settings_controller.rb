@@ -1,5 +1,5 @@
-class SettingsController < HomeController
-  
+class SettingsController < ApplicationController
+   
     before_action :set_setting, only: [:show, :edit, :update, :destroy]
   
     def index

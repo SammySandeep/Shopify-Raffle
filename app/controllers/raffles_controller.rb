@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class RafflesController < HomeController
+   
   def index
     shop = Shop.find_by(shopify_domain: session['shopify.omniauth_params']['shop'])
     products = shop.products
@@ -30,35 +31,46 @@ class RafflesController < HomeController
   def send_mail_runner
     raffle_id = params[:raffle_id]
     customer_id = params[:customer_id]
-    @raffle = Raffle.find_by(id: raffle_id)
-    @raffle.inventory -= 1
-    @raffle.save
-    runner_customer = Customer.find_by(id: customer_id)
-    runner_customer_name = runner_customer.first_name + ' ' + runner_customer.last_name
-    runner_customer_email = runner_customer.email_id
-    product = @raffle.variant.product
-    product_title = product.shopify_product_title
-    WinnerMailer.send_winner_mail(runner_customer_name,product_title,runner_customer_email).deliver_now
-    respond_to show_winner_and_runner_customers_path(@raffle.id), notice: 'Mail Triggered Successfully!'
+    @result_id = Result.find_by(raffle_id: raffle_id, customer_id: customer_id).id
+    if Notification.exists?(:result_id => @result_id)
+      redirect_to show_winner_and_runner_customers_path(raffle_id), notice: 'Mail Already Triggered to this customer!'
+    else
+      Notification.create(result_id: @result_id,notified: true)
+      @raffle = Raffle.find_by(id: raffle_id)
+      var_id = @raffle.variant_id
+      product = @raffle.variant.product
+      product_title = product.shopify_product_title
+      runner_customer = Customer.find_by(id: customer_id)
+      runner_customer_name = runner_customer.first_name + ' ' + runner_customer.last_name
+      runner_customer_email = runner_customer.email_id
+      WinnerMailer.send_winner_mail(runner_customer_name,product_title,runner_customer_email,raffle_id,customer_id).deliver_now
+      redirect_to show_winner_and_runner_customers_path(raffle_id), notice: 'Mail Triggered Successfully!'
+    end
   end
 
   def send_mail_winner
     @raffle = Raffle.find(raffle_params[:id])
-    @raffle.inventory -= 1
-    @raffle.save
+    raffle_id = @raffle.id
     winner_customer = Result.find_by(raffle_id: @raffle.id, type_of_customer: 'winner')
-    winner_customer_id = winner_customer.customer_id
-    winner_customer_info = Customer.find_by(id: winner_customer_id)
-    winner_full_name = winner_customer_info.first_name + ' ' + winner_customer_info.last_name 
-    winner_email = winner_customer_info.email_id
-    product = @raffle.variant.product
-    product_title = product.shopify_product_title
-    WinnerMailer.send_winner_mail(winner_full_name,product_title, winner_email).deliver_now
-    redirect_to show_winner_and_runner_customers_path(@raffle.id), notice: 'Mail Triggered Successfully!'
+    @result_id=winner_customer.id
+    if Notification.exists?(:result_id => @result_id)
+      redirect_to show_winner_and_runner_customers_path(raffle_id), notice: 'Mail Already Triggered to this customer!'
+    else
+      Notification.create(result_id: @result_id,notified: true)
+      winner_customer_id = winner_customer.customer_id
+      winner_customer_info = Customer.find_by(id: winner_customer_id)
+      winner_full_name = winner_customer_info.first_name + ' ' + winner_customer_info.last_name 
+      winner_email = winner_customer_info.email_id
+      product = @raffle.variant.product
+      product_title = product.shopify_product_title
+      WinnerMailer.send_winner_mail(winner_full_name,product_title, winner_email,raffle_id,winner_customer_id).deliver_now
+      redirect_to show_winner_and_runner_customers_path(raffle_id), notice: 'Mail Triggered Successfully!'
+    end
   end
 
   def send_mail_participants
     @raffle = Raffle.find(raffle_params[:id])
+    raffle_id = @raffle.id
     product = @raffle.variant.product
     product_title = product.shopify_product_title
     results_participant = Result.where(raffle_id: raffle_params[:id], type_of_customer: 'participant')
@@ -67,6 +79,7 @@ class RafflesController < HomeController
       customer_full_name = customer.first_name + ' ' + customer.last_name
       customer_email = customer.email_id
       WinnerMailer.send_participants_mail(customer_full_name,product_title,customer_email).deliver_now
+      redirect_to show_winner_and_runner_customers_path(raffle_id), notice: 'Mail Triggered Successfully!'
     end
   end
 
