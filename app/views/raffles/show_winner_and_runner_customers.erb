@@ -1,3 +1,4 @@
+<%= render "layouts/nav" %>
 <p id="notice"><%= notice %></p>
 <section>
     <div class="container">
@@ -87,10 +88,11 @@
                         </td>
                     <% end %>
                   <td>
+       
                     <% if @raffle.inventory > 0 %>
-                      <td><%= button_to "Notify", raffle_send_mail_runner_path(:customer_id => customer.id,:raffle_id => @raffle.id),:class => "raffle_btn", :method => :get, :disabled => false %> </td>
+                      <td><%= link_to "Notify".html_safe, raffle_send_mail_runner_path(:customer_id => customer.id,:raffle_id => @raffle.id),:class => "raffle_btn", :method => :get, :disabled => false %> </td>
                     <% else %>
-                      <td><%= button_to "Notify", raffle_send_mail_runner_path(:customer_id => customer.id,:raffle_id => @raffle.id),:class => "raffle_btn_disabled", :method => :get, :disabled => true %> </td>
+                      <td><%= link_to "Notify", raffle_send_mail_runner_path(:customer_id => customer.id,:raffle_id => @raffle.id),:class => "raffle_btn_disabled", :method => :get, :disabled => true %> </td>
                     <% end %> 
                   </td>
                 </tr>
