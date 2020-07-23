@@ -5,7 +5,7 @@ class WinnerMailer < ApplicationMailer
     def send_winner_mail(winner_full_name,product_title,winner_email,raffle_id,winner_customer_id)
         @body = Setting.first.email_body_for_winner
         @delivery_method = Raffle.find_by(id: raffle_id).delivery_method
-        @url="https://c1ae958dccfd.ngrok.io/links/expiration?raffle_id="
+        @url="https://staging-raffle.klocapps.com/links/expiration?raffle_id="
         @raffle_id = raffle_id.to_s
         @winner_customer_id = winner_customer_id.to_s
         @url = @url+@raffle_id+"&customer_id="+@winner_customer_id

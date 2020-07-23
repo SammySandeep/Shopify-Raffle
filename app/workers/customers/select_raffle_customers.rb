@@ -66,7 +66,7 @@ class Customers::SelectRaffleCustomers
 
   def select_customers_for_raffle(customers, number_of_runners)
     selected_customers = Array.new
-    while selected_customers.count < number_of_runners
+    while selected_customers.count <= number_of_runners
       customer = customers.sample
       next if selected_customers.include? customer.id
 

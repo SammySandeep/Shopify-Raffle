@@ -10,12 +10,15 @@ class LinksController < ApplicationController
         @notification = Notification.find_by(result_id: @result_id)
         @notification_created_at = @notification.created_at
         @time_in_hour = Setting.first.purchase_window
-        @current_time = DateTime.now
+        @current_time = DateTime.now.utc
         @actual_time = @notification_created_at + @time_in_hour.hours
-        if @actual_time > @current_time
+        
+        if @actual_time < @current_time
+        
             redirect_to links_path, notice: 'We are very sorry.You have expired your link' 
 
         else
+
             @raffle = Raffle.find_by(id: @raffle_id)
             @var_id = @raffle.variant_id
             @shopify_variant = Variant.find_by(id: @var_id)
