@@ -22,21 +22,27 @@ class RafflesController < HomeController
   def show_winner_and_runner_customers
     @raffle = Raffle.find(raffle_params[:id])
     winner = find_result_by_raffle_id_and_type_of_customer
-    @winner_customer = find_winner_customer winner.customer_id
-    runners_results = find_runner_customer_by_raffle_id_and_type_of_customer
-    @runner_customers = find_customers runners_results
-  
+    if winner.nil?
+      redirect_to raffles_path, notice: 'No winner found for this raffle!'
+    else
+      @winner_customer = find_winner_customer winner.customer_id
+      runners_results = find_runner_customer_by_raffle_id_and_type_of_customer
+      @runner_customers = find_customers runners_results
+    end
   end
 
   def send_mail_runner
     raffle_id = params[:raffle_id]
     customer_id = params[:customer_id]
     @result_id = Result.find_by(raffle_id: raffle_id, customer_id: customer_id).id
+    @raffle = Raffle.find_by(id: raffle_id)
+    
     if Notification.exists?(:result_id => @result_id)
       redirect_to show_winner_and_runner_customers_path(raffle_id), notice: 'Mail Already Triggered to this customer!'
     else
       Notification.create(result_id: @result_id,notified: true)
-      @raffle = Raffle.find_by(id: raffle_id)
+      @raffle.variant.inventory_quantity -= 1
+      @raffle.variant.save
       var_id = @raffle.variant_id
       product = @raffle.variant.product
       product_title = product.shopify_product_title
@@ -57,6 +63,8 @@ class RafflesController < HomeController
       redirect_to show_winner_and_runner_customers_path(raffle_id), notice: 'Mail Already Triggered to this customer!'
     else
       Notification.create(result_id: @result_id,notified: true)
+      @raffle.variant.inventory_quantity -= 1
+      @raffle.variant.save
       winner_customer_id = winner_customer.customer_id
       winner_customer_info = Customer.find_by(id: winner_customer_id)
       winner_full_name = winner_customer_info.first_name + ' ' + winner_customer_info.last_name 
