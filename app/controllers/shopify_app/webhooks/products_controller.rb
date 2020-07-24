@@ -109,7 +109,16 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
     if !product_params[:tags].nil?
       @tags = product_params[:tags].split(',').collect { |tag| tag.strip.downcase }
       if @tags.include?('raffle') && @tags.any? { |tag| tag.include? 'launch' } && (@tags.include?('online') || @tags.include?('offline'))
-        return true
+        if @tags.each do |tag|
+          if tag.include?('launch')
+            launch_date = tag.gsub(/[^\d-]/, '').split('-').reject(&:empty?)
+            launch_date_time = DateTime.civil(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i)
+            if launch_date_time > DateTime.now
+              return true
+            end
+          end
+        end
+        end
       end
     end
     return false
