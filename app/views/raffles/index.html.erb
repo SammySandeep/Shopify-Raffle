@@ -34,7 +34,7 @@ table.dataTable thead .sorting_desc_disabled:before{
                 <td><%= raffle.variant.title %></td>
                 <td><%= raffle.launch_date_time%></td>
                 <td><%= raffle.delivery_method %></td>
-                <% if raffle.variant.product.status == 'completed' %>
+                <% if raffle.variant.product.status == 'pending' %>
                   <td><%= button_to  "View Results", show_winner_and_runner_customers_path(raffle.id),:class => "raffle_btn", :method => :get, :id => "resultbtn", :disabled => false %></td>
                 <% else %>
                   <td><%= button_to  "View Results", show_winner_and_runner_customers_path(raffle.id),:class => "raffle_btn_disabled", :method => :get, :id => "resultbtn", :disabled => true %></td>

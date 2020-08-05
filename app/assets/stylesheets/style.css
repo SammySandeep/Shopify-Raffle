@@ -105,7 +105,7 @@ button:focus{
     text-align: center;
 }
 #example_wrapper{
-    overflow: scroll;
+    /* overflow: scroll; */
 }
 .products_details_right{
     list-style-type: none;
@@ -154,10 +154,11 @@ table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td
 @media screen and (max-width: 480px) and (min-width: 300px){
 .list-inline>li {
     float: left;
-    margin-left: 5px;
+    margin-left: 0px;
 }
 .navbar-light .navbar-nav .nav-link{
-    text-align: center;
+    text-align: left;
+    color: #2f2c75;
 }
 .raffle_btn{
     font-size: 14px;
