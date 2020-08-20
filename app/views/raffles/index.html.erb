@@ -28,6 +28,8 @@ table.dataTable thead .sorting_desc_disabled:before{
             </tr>
         </thead>
         <tbody>
+        <% if @raffles.nil? %>
+        <% else %>
           <%@raffles.each do |raffle| %>
             <tr>
                 <td><%= raffle.variant.product.shopify_product_title %></td>
@@ -35,13 +37,13 @@ table.dataTable thead .sorting_desc_disabled:before{
                 <td><%= raffle.launch_date_time%></td>
                 <td><%= raffle.delivery_method %></td>
                 <% if raffle.variant.product.status == 'completed' %>
-                  <td><%= button_to  "View Results", show_winner_and_runner_customers_path(raffle.id),:class => "raffle_btn", :method => :get, :id => "resultbtn", :disabled => false %></td>
+                  <td><%= button_to  "View Results", winner_and_runner_customers_path(raffle.id),:class => "raffle_btn", :method => :get, :id => "resultbtn", :disabled => false %></td>
                 <% else %>
-                  <td><%= button_to  "View Results", show_winner_and_runner_customers_path(raffle.id),:class => "raffle_btn_disabled", :method => :get, :id => "resultbtn", :disabled => true %></td>
+                  <td><%= button_to  "View Results", winner_and_runner_customers_path(raffle.id),:class => "raffle_btn_disabled", :method => :get, :id => "resultbtn", :disabled => true %></td>
                 <% end %>
-                <td><%= button_to  "View Entries", raffle_show_participant_customers_path(raffle.id),:class => "raffle_btn", :method => :get %> </td>
-
+                <td><%= button_to  "View Entries", raffle_participant_customers_path(raffle.id),:class => "raffle_btn", :method => :get %> </td>
             </tr>
+          <% end %>
           <% end %>
             </tbody>
     </table>

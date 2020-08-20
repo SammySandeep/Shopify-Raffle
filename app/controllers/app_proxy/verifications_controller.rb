@@ -14,7 +14,7 @@ class AppProxy::VerificationsController < ApplicationController
 
     if !customer.verified
       customer_dix_digit_otp = create_or_update_customer_verification customer
-      WinnerMailer.send_otp_mail(customer.email_id, customer_dix_digit_otp).deliver_now
+      Mailer::Email.send_otp_mail customer.email_id, customer_dix_digit_otp
       head 200
     else
       head 202
