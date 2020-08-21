@@ -5,6 +5,7 @@ class AppProxy::RegistersController < ApplicationController
     customer = find_customer_by_email
     raffle = find_variant_by_shopify_variant_id.raffle
     create_address(customer.id, raffle.id)
+    reduce_customer_chance_by_one(customer.id)
     head 200
   rescue StandardError
     head 400
@@ -17,6 +18,12 @@ class AppProxy::RegistersController < ApplicationController
     address.customer_id = customer_id
     address.raffle_id = raffle_id
     address.save
+  end
+
+  def reduce_customer_chance_by_one(customer_id)
+    customer = Customer.find(customer_id)
+    customer.default_participant_chance -= 1
+    customer.save
   end
 
   def find_customer_by_email
