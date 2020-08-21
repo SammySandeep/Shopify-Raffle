@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   mount ShopifyApp::Engine, at: '/'
 
   get 'raffles', to: 'raffles#index'
-  get 'raffles/show_participant_customers/:id', to: 'raffles#show_participant_customers', as: 'raffle_show_participant_customers'
-  get 'raffles/show_winner_and_runner_customers/:id', to: 'raffles#show_winner_and_runner_customers', as: 'show_winner_and_runner_customers'
+  get 'raffles/participant_customers/:id', to: 'raffles#participant_customers', as: 'raffle_participant_customers'
+  get 'raffles/winner_and_runner_customers/:id', to: 'raffles#winner_and_runner_customers', as: 'winner_and_runner_customers'
 
   namespace :app_proxy do
     get 'verifications/send_otp', to: 'verifications#send_otp'
@@ -17,9 +17,9 @@ Rails.application.routes.draw do
     get 'registrations/register_customer', to: 'registers#register_customer'
   end
 
-  get 'raffles/send_mail_winner/:id', to: 'raffles#send_mail_winner', as: 'raffle_send_mail_winner'
-  get 'raffles/send_mail_runner/:id', to: 'raffles#send_mail_runner', as: 'raffle_send_mail_runner'
-  get 'raffles/send_mail_participants/:id', to: 'raffles#send_mail_participants', as: 'raffle_send_mail_participants'
+  get 'raffles/send_mail_to_winner/:id', to: 'raffles#send_mail_to_winner', as: 'raffle_send_mail_to_winner'
+  get 'raffles/send_mail_to_runner/:id', to: 'raffles#send_mail_to_runner', as: 'raffle_send_mail_to_runner'
+  get 'raffles/send_mail_to_participants/:id', to: 'raffles#send_mail_to_participants', as: 'raffle_send_mail_to_participants'
   get 'links/expiration', to: 'links#expiration', as: 'links_expiration'
   get 'links/index', to: 'links#index', as: 'links'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

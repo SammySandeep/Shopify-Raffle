@@ -12,8 +12,8 @@
         </div>
         <div class="col-md-6">
           <div class="results_data_right">
-            <%= button_to "Notify Participants", raffle_send_mail_participants_path(@raffle.id),:class => "raffle_btn", :method => :get %> 
-            <%= button_to "View Entries", raffle_show_participant_customers_path(@raffle.id),:class => "raffle_btn", :method => :get %> 
+            <%= button_to "Notify Participants", raffle_send_mail_to_participants_path(@raffle.id),:class => "raffle_btn", :method => :get %> 
+            <%= button_to "View Entries", raffle_participant_customers_path(@raffle.id),:class => "raffle_btn", :method => :get %> 
 
           </div>
         </div>
@@ -47,9 +47,9 @@
                           </td>
                           <% end %>
                           <% if @raffle.variant.inventory_quantity > 0 %>
-                            <td><%= button_to "Notify", raffle_send_mail_winner_path(@raffle.id),:class => "raffle_btn", :method => :get, :disabled => false %> </td>
+                            <td><%= button_to "Notify", raffle_send_mail_to_winner_path(@raffle.id),:class => "raffle_btn", :method => :get, :disabled => false %> </td>
                           <% else %>
-                            <td><%= button_to "Notify", raffle_send_mail_winner_path(@raffle.id),:class => "raffle_btn_disabled", :method => :get, :disabled => true %> </td>
+                            <td><%= button_to "Notify", raffle_send_mail_to_winner_path(@raffle.id),:class => "raffle_btn_disabled", :method => :get, :disabled => true %> </td>
                           <% end %>
                     
                   </tr>
@@ -87,7 +87,7 @@
                         </td>
                     <% end %>
                   
-                      <td><%= link_to_if(@raffle.variant.inventory_quantity > 0, "Notify".html_safe, raffle_send_mail_runner_path(:customer_id => customer.id,:raffle_id => @raffle.id),:class => " btn raffle_btn", :method => :get) %> </td>
+                      <td><%= link_to_if(@raffle.variant.inventory_quantity > 0, "Notify".html_safe, raffle_send_mail_to_runner_path(:customer_id => customer.id,:raffle_id => @raffle.id),:class => " btn raffle_btn", :method => :get) %> </td>
          
                 </tr>
 
