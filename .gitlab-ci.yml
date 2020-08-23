@@ -48,7 +48,7 @@ deploy_staging:
    - echo "$S_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
    - *ssh_and_known_host_modification_definition
    - ssh kloc-admin@174.138.123.31 "cd shopify-kloc-raffle/ && git pull"
-   - ssh kloc-admin@174.138.123.31 "sudo echo "TAG=$CI_COMMIT_SHORT_SHA"$'\n'"RAILS_MAX_THREADS=$RAILS_MAX_THREADS"$'\n'"RAFFLE_DATABASE_NAME=$RAFFLE_DATABASE_NAME"$'\n'"RAFFLE_DATABASE_USERNAME=$RAFFLE_DATABASE_USERNAME"$'\n'"RAFFLE_DATABASE_PASSWORD=$RAFFLE_DATABASE_PASSWORD"$'\n'"HOST=$S_HOST"$'\n'"DB_PORT=$DB_PORT"$'\n'"SHOPIFY_API_KEY=$S_SHOPIFY_API_KEY"$'\n'"SHOPIFY_API_SECRET=$S_SHOPIFY_API_SECRET"$'\n'"URL=$URL"$'\n'"SIDEKIQ_USERNAME=$SIDEKIQ_USERNAME"$'\n'"SIDEKIQ_PASSWORD=$SIDEKIQ_PASSWORD"$'\n'"REDIS_URL=$REDIS_URL"$'\n'"KEY=$ENCRYPT_AND_DECRYPT_KEY"$'\n'"EMAIL=$SENDGRID_EMAIL"$'\n'"PASSWORD=$SENDGRID_PASSWORD"$'\n'"DOMAIN=$DOMAIN"$'\n'"OTP_DURATION=$OTP_DURATION"> .env && sudo docker-compose config && sudo docker-compose up -d && sudo docker-compose run rails bundle exec rake db:create && sudo docker-compose run rails bundle exec rake db:migrate "
+   - ssh kloc-admin@174.138.123.31 "sudo echo "TAG=$CI_COMMIT_SHORT_SHA"$'\n'"RAILS_MAX_THREADS=$S_RAILS_MAX_THREADS"$'\n'"RAFFLE_DATABASE_NAME=$RAFFLE_DATABASE_NAME"$'\n'"RAFFLE_DATABASE_USERNAME=$RAFFLE_DATABASE_USERNAME"$'\n'"RAFFLE_DATABASE_PASSWORD=$RAFFLE_DATABASE_PASSWORD"$'\n'"HOST=$S_HOST"$'\n'"DB_PORT=$DB_PORT"$'\n'"SHOPIFY_API_KEY=$S_SHOPIFY_API_KEY"$'\n'"SHOPIFY_API_SECRET=$S_SHOPIFY_API_SECRET"$'\n'"URL=$S_URL"$'\n'"SIDEKIQ_USERNAME=$SIDEKIQ_USERNAME"$'\n'"SIDEKIQ_PASSWORD=$SIDEKIQ_PASSWORD"$'\n'"REDIS_URL=$S_REDIS_URL"$'\n'"KEY=$S_ENCRYPT_AND_DECRYPT_KEY"$'\n'"EMAIL_API=$SENDGRID_EMAIL"$'\n'"EMAIL_PWD=$SENDGRID_PASSWORD"$'\n'"EMAIL_SMTP=$SENDGRID_SMTP"$'\n'"DOMAIN=$S_DOMAIN"$'\n'"OTP_DURATION=$OTP_DURATION"$'\n'"EMAIL=$S_EMAIL"> .env && sudo docker-compose config && sudo docker-compose up -d && sudo docker-compose run rails bundle exec rake db:create && sudo docker-compose run rails bundle exec rake db:migrate "
   environment:
     name: staging
     url: https://$DOMAIN
@@ -63,7 +63,7 @@ deploy_staging:
    - *ssh_definition
    - echo "$P_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
    - *ssh_and_known_host_modification_definition
-   - ssh kloc-admin@68.183.247.108 "sudo env "TAG=$CI_COMMIT_SHORT_SHA" "P_MONGOURI=$P_MONGOURI" "G_MSG91=$G_MSG91" "P_APP_URI=$P_APP_URI" "P_APP_URL=$P_APP_URL" "G_DATABASE_NAME=$G_DATABASE_NAME" "P_SHOPIFY_API_KEY=$P_SHOPIFY_API_KEY" "P_SHOPIFY_SHARED_SECRET=$P_SHOPIFY_SHARED_SECRET" "G_APP_SCOPE=$G_APP_SCOPE" "G_APP_NAME=$G_APP_NAME" "G_PERSMS=$G_PERSMS" docker stack deploy --with-registry-auth -c docker-compose.yml loginotp" 
+   - ssh ubuntu@54.215.115.70 "sudo env "TAG=$CI_COMMIT_SHORT_SHA" "RAILS_MAX_THREADS=$P_RAILS_MAX_THREADS" "RAFFLE_DATABASE_NAME=$P_RAFFLE_DATABASE_NAME" "RAFFLE_DATABASE_USERNAME=$P_RAFFLE_DATABASE_USERNAME" "RAFFLE_DATABASE_PASSWORD=$P_RAFFLE_DATABASE_PASSWORD" "HOST=$P_HOST" "SHOPIFY_API_KEY=$P_SHOPIFY_API_KEY" "SHOPIFY_API_SECRET=$P_SHOPIFY_API_SECRET" "URL=$P_URL" "SIDEKIQ_USERNAME=$SIDEKIQ_USERNAME" "SIDEKIQ_PASSWORD=$SIDEKIQ_PASSWORD" "DB_PORT=$DB_PORT" "REDIS_URL=$P_REDIS_URL" "KEY=$P_ENCRYPT_AND_DECRYPT_KEY" "EMAIL_API=$AWS_API_KEY" "EMAIL_PWD=$AWS_SECRET_KEY" "EMAIL_SMTP=$AWS_SMTP" "EMAIL=$P_EMAIL" "DOMAIN=$P_DOMAIN" "OTP_DURATION=$OTP_DURATION" docker stack deploy --with-registry-auth -c docker-compose.yml loginotp" 
   environment:
     name: prodution
     url: https://$DOMAIN
@@ -76,7 +76,7 @@ deploy_staging:
    - *ssh_definition
    - echo "$P_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
    - *ssh_and_known_host_modification_definition
-   - ssh kloc-admin@68.183.247.108 "sudo docker service rollback loginotp_apdp"
+   - ssh ubuntu@54.215.115.70 "sudo docker service rollback loginotp_apdp"
   environment:
     name: prodution
   when: manual
