@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'hasan.ali@kloctechnologies.co.in'
+  default from: ENV["EMAIL"]
   layout 'mailer'
 end
