@@ -1,8 +1,9 @@
 class LinksController < HomeController
     include ApplicationHelper
+    
     def index
     end
-    
+
     def expiration
         result = find_result_by_raffle_id_and_customer_id params[:raffle_id], params[:customer_id]
         notification = find_notification_by_result_id result.id
@@ -10,11 +11,8 @@ class LinksController < HomeController
         time_in_hour = shop.setting.purchase_window
         current_time = DateTime.now.utc
         actual_time = notification.created_at + time_in_hour.hours
-        
         if actual_time < current_time
-        
             redirect_to links_path, notice: 'We are very sorry.You have expired your link' 
-
         else
             raffle = find_raffle_by_raffle_id params[:raffle_id] 
             shopify_variant = find_variant_by_id raffle.variant_id
