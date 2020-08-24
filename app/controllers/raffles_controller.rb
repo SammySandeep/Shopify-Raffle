@@ -16,7 +16,7 @@ class RafflesController < HomeController
   def winner_and_runner_customers
     @raffle = find_raffle_by_id raffle_params[:id]
     winner  = take_results_by_raffle_id_and_type_of_customer raffle_params[:id], 'winner'
-    if winner.nil?
+    if winner[0].nil?
       redirect_to raffles_path, notice: 'No winner found for this raffle!'
     else
       @winner_customer = find_winner_customer winner[0].customer_id
