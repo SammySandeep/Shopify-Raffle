@@ -4,9 +4,9 @@ InfluxDB::Rails.configure do |config|
     ## The only setting you actually need to update is the name of the
     ## database within the InfluxDB server instance. Don't forget to
     ## create this database as well.
-    config.client.hosts = "64.225.84.17"
-    config.client.port = 8086
-    config.client.database = "raffle_staging"
+    config.client.hosts = ENV["INFLUXDB_HOST"]
+    config.client.port = ENV["INFLUXDB_PORT"]
+    config.client.database = ENV["INFLUXDB_NAME"]
   
     ## If you've setup user authentication (and activated it in the server
     ## config), you need to configure the credentials here.
