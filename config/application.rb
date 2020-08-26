@@ -17,5 +17,6 @@ module ShopifyKlocRaffle
     # the framework and any gems in your application.
 
     config.active_job.queue_adapter = :sidekiq
+    config.time_zone = "Pacific Time (US & Canada)"
   end
 end
