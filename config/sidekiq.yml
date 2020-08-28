@@ -1,4 +1,4 @@
 :schedule:
   raffle:
-    cron: '0 * * * * * Asia/Kolkata'
+    cron: '0 * * * * * America/Los_Angeles'
     class: Customers::SelectRaffleCustomers

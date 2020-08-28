@@ -11,6 +11,7 @@ class LinksController < HomeController
         time_in_hour = shop.setting.purchase_window
         current_time = DateTime.now.utc
         actual_time = notification.created_at + time_in_hour.hours
+        binding.pry
         if actual_time < current_time
             redirect_to links_path, notice: 'We are very sorry.You have expired your link' 
         else
