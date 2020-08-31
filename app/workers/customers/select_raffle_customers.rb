@@ -8,7 +8,7 @@ class Customers::SelectRaffleCustomers
     Product.where(status: 'pending').each do |product|
       product.variants.each do |variant|
         raffle = variant.raffle
-        if DateTime.now.change(sec: 0, offset: 0) >= raffle.launch_date_time && !Setting.first.nil?
+        if DateTime.now.in_time_zone >= raffle.launch_date_time && !Setting.first.nil?
           do_raffle(raffle)
         end
       end
@@ -21,7 +21,7 @@ class Customers::SelectRaffleCustomers
   def check_raffle_end_and_update_product_status product
     product_raffle_completed = true
     product.variants.each do |variant|
-      if variant.raffle.launch_date_time > DateTime.now.change(sec: 0, offset: 0)
+      if variant.raffle.launch_date_time > DateTime.now.in_time_zone
         product_raffle_completed = false
         break
       end
