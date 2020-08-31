@@ -29,7 +29,7 @@ class AppProxy::VerificationsController < ApplicationController
     decrypted_data = decrypt_customer_otp_from_db customer
     if decrypted_data == verification_params_for_verify_otp[:code]
       customer_expiration_date_time = find_customer_verification_code_expiration_date_time customer
-      if customer_expiration_date_time.localtime >= DateTime.now.in_time_zone
+      if customer_expiration_date_time >= DateTime.now.in_time_zone
         customer.verified = true
         customer.save
         head 200
@@ -84,7 +84,7 @@ class AppProxy::VerificationsController < ApplicationController
     decrypted_data = crypt.decrypt_and_verify(customer.verification.code)
     if decrypted_data == verification_params_for_verify_otp[:code]
       customer_expiration_date_time = find_customer_verification_code_expiration_date_time customer
-      if customer_expiration_date_time.localtime >= DateTime.now.in_time_zone
+      if customer_expiration_date_time >= DateTime.now.in_time_zone
         customer.verified = true
         customer.save
         return true
