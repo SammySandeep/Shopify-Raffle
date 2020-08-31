@@ -38,7 +38,7 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
         @raffle = find_raffle_by_variant_id(@variant.id)
         launch_date = manipulate_launch_date
         @raffle.title = product_params[:title].gsub(' ', '') + '_' + variant[:title].gsub(' ', '')
-        @raffle.launch_date_time = DateTime.civil(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i)
+        @raffle.launch_date_time = Time.zone.local(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i)
         @raffle.delivery_method = @tags.include?('online') ? 'online' : 'offline'
         @raffle.save
       end
@@ -112,8 +112,8 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
         if @tags.each do |tag|
           if tag.include?('launch')
             launch_date = tag.gsub(/[^\d-]/, '').split('-').reject(&:empty?)
-            launch_date_time = DateTime.civil(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i)
-            if launch_date_time > DateTime.now
+            launch_date_time = Time.zone.local(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i)
+            if launch_date_time > DateTime.now.in_time_zone
               return true
             end
           end
@@ -138,7 +138,7 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
     launch_date = manipulate_launch_date
     Raffle.create(
       title: product_params[:title].gsub(' ', '') + '_' + variant[:title].gsub(' ', ''),
-      launch_date_time: DateTime.civil(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i),
+      launch_date_time: Time.zone.local(launch_date[2].to_i, launch_date[0].to_i, launch_date[1].to_i, launch_date[3].to_i, launch_date[4].to_i),
       delivery_method: @tags.include?('online') ? 'online' : 'offline',
       variant_id: variant.id
     )
