@@ -4,17 +4,19 @@ class AppProxy::VerificationsController < ApplicationController
   before_action :verification_params_for_send_otp, only: %i[send_otp]
   before_action :verification_params_for_verify_otp, only: %i[verify_otp]
 
-  # status of 200 valid customer needs to varify OTP
+  # status of 200 valid customer needs to verify OTP
   # status of 202 customer already validated show variant page
   # status of 406 customer already registered for this raffle
   # status of 403 customer participant chance if -1
   def send_otp
     customer = find_customer_by_email_id
+    
     return if !validate_email_for_already_registered_or_customer_chance_over customer
 
     if !customer.verified
       customer_dix_digit_otp = create_or_update_customer_verification customer
-      Mailer::Email.send_otp_mail customer.email_id, customer_dix_digit_otp
+      body = Setting.first.email_body_for_customer_registration_verification
+      Mailer::Email.send_otp_mail customer.email_id, customer_dix_digit_otp, body
       head 200
     else
       head 202

@@ -8,8 +8,12 @@ class Mailer::Email
         NotifyMailer.participants(product_title, raffle, customer, body).deliver_now
     end
 
-    def self.send_otp_mail customer_email_id, customer_dix_digit_otp
-        NotifyMailer.otp(customer_email_id, customer_dix_digit_otp).deliver_now    
-    end    
+    def self.send_otp_mail customer_email_id, customer_dix_digit_otp, body
+        NotifyMailer.otp(customer_email_id, customer_dix_digit_otp, body).deliver_now    
+    end   
+    
+    def self.send_registration_confirmation_mail customer, product_title, body
+        NotifyMailer.raffle_participation_confirmation(customer, product_title, body).deliver_now
+    end
 
 end

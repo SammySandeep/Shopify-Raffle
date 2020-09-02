@@ -36,23 +36,24 @@
             </div>
             <div class="form-group">
               <label for="exampleFormControlSelect1">Select Number of Runner-ups:</label>
-              <%= form.number_field :number_of_runner, :class => "form-control" %>
+              <%= form.number_field :number_of_runner, :class => "form-control", :min => "0" %>
               <span id="runnerUpError"></span>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Email body for Registration:</label>
+                <label for="exampleFormControlTextarea1">Email body for Raffle Registration:</label>
                 <%= form.text_area :email_body_for_registration,:class => "form-control",:id => 'emailBodyRegistration',:rows =>"3" %> 
                 <span id="emailBodyRegistrationError"></span>
                 <button type="button" class = "btn raffle_product" id="customer_name_registration">Add Customer Name</button> 
+                <button type="button" class = "btn raffle_product" id="raffle_product_registration">Add Raffle Product Name</button> 
             </div>
             
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Email body for Registration Verification:</label>
+                <label for="exampleFormControlTextarea1">Email body for "Email" Verification:</label>
                 <%= form.text_area :email_body_for_customer_registration_verification,:class => "form-control",:id => 'emailBodyRegistrationVerification',:rows =>"3" %>
                 <span id="emailBodyRegistrationVerificationError"></span>
-                <button type="button" class = "btn raffle_product" id="customer_name_registration_verification">Add Customer Name</button> 
+                
   
             </div>
         
@@ -208,16 +209,16 @@
       return false;
     }
   });
-   $(emailBodyRegistrationVerification).on('keydown', function(event) {
-    if (event.keyCode === 9) {
-      var v = this.value;
-      s = this.selectionStart;
-      e = this.selectionEnd;
-      this.value = v.substring(0, s) + '\t' + v.substring(e);
-      this.selectionStart = this.selectionEnd = s + 1;
-      return false;
-    }
-  });
+  //  $(emailBodyRegistrationVerification).on('keydown', function(event) {
+  //   if (event.keyCode === 9) {
+  //     var v = this.value;
+  //     s = this.selectionStart;
+  //     e = this.selectionEnd;
+  //     this.value = v.substring(0, s) + '\t' + v.substring(e);
+  //     this.selectionStart = this.selectionEnd = s + 1;
+  //     return false;
+  //   }
+  // });
 
   $(emailBodyWinner).on('mouseup keyup', function(e) {
     cusrsorPosition = $(this).caret();
@@ -231,10 +232,10 @@
     cusrsorPosition = $(this).caret();
     // console.log($(this).caret());
   });
-    $(emailBodyRegistrationVerification).on('mouseup keyup', function(e) {
-    cusrsorPosition = $(this).caret();
-    // console.log($(this).caret());
-  });
+  //   $(emailBodyRegistrationVerification).on('mouseup keyup', function(e) {
+  //   cusrsorPosition = $(this).caret();
+  //   // console.log($(this).caret());
+  // });
 
   $('#customer_name_winner').click(function(e) {
     $(emailBodyWinner).caret(cusrsorPosition);
@@ -270,12 +271,21 @@
     let endText = (emailBodyRegistration.value).substring(cusrsorPosition, emailBodyRegistration.value.length).trim();
     emailBodyRegistration.value = frontText + ' {Your customer name will be replaced here} ' + endText;
   });
+  
 
-  $('#customer_name_registration_verification').click(function(e) {
-    $(emailBodyRegistrationVerification).caret(cusrsorPosition);
-    let frontText = (emailBodyRegistrationVerification.value).substring(0, cusrsorPosition).trim();
-    let endText = (emailBodyRegistrationVerification.value).substring(cusrsorPosition, emailBodyRegistrationVerification.value.length).trim();
-    emailBodyRegistrationVerification.value = frontText + ' {Your customer name will be replaced here} ' + endText;
+  $('#raffle_product_registration').click(function(e) {
+    $(emailBodyParticipant).caret(cusrsorPosition);
+    let frontText = (emailBodyRegistration.value).substring(0, cusrsorPosition).trim();
+    let endText = (emailBodyRegistration.value).substring(cusrsorPosition, emailBodyRegistration.value.length).trim();
+    emailBodyRegistration.value = frontText + ' {Raffle products will be replaced here} ' + endText;
   });
+
+
+  // $('#customer_name_registration_verification').click(function(e) {
+  //   $(emailBodyRegistrationVerification).caret(cusrsorPosition);
+  //   let frontText = (emailBodyRegistrationVerification.value).substring(0, cusrsorPosition).trim();
+  //   let endText = (emailBodyRegistrationVerification.value).substring(cusrsorPosition, emailBodyRegistrationVerification.value.length).trim();
+  //   emailBodyRegistrationVerification.value = frontText + ' {Your customer name will be replaced here} ' + endText;
+  // });
 
   </script> 
