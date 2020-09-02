@@ -22,9 +22,20 @@ class NotifyMailer < ApplicationMailer
         mail to: "#{customer.email_id}", subject: "Better Luck Next Time!" 
     end
 
-    def otp(customer_mail, six_digit_otp)
-        @body = 'your OTP for raffle is ' + six_digit_otp.to_s
+    def otp(customer_mail, six_digit_otp, body)
+        @body = body
+        @body = @body + six_digit_otp.to_s
         mail to: customer_mail, subject: 'OTP'
     end
-end
 
+    def raffle_participation_confirmation(customer, product_title, body)
+        customer_name = customer.first_name + ' ' + customer.last_name
+        @body = body
+        @body = @body.gsub "{Your customer name will be replaced here}",customer_name
+        @body = @body.gsub "{Raffle products will be replaced here}",product_title
+        @body = @body.gsub ' ', '&nbsp;'
+        @body = @body.gsub "\t", ' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '
+        mail to: "#{customer.email_id}", subject: "Raffle Registration Confirmation!" 
+    end
+
+end
