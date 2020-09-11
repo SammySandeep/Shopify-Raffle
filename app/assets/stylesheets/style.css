@@ -74,6 +74,12 @@ button:focus{
     color: white; 
 
 }
+ .tableProduct{
+    width: 100%;
+    overflow:scroll;
+    display: block;
+
+}
 
 .raffleTableHead{
     background-color: #2D2B75;
@@ -104,9 +110,9 @@ button:focus{
     border-radius: 3px;
     text-align: center;
 }
-#example_wrapper{
-    /* overflow: scroll; */
-}
+/* .example_wrapper{
+     overflow: scroll; 
+}  */
 .products_details_right{
     list-style-type: none;
     text-align: right;
@@ -127,6 +133,8 @@ table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_des
 table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td{
     text-align: center;
 }
+
+
 .page-item.active .page-link{
     background: #2f2c75;
     border-color: #828282;
