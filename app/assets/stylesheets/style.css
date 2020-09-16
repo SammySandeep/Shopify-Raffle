@@ -164,6 +164,14 @@ table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td
     float: left;
     margin-left: 0px;
 }
+
+li.paginate_button.page-item {
+    font-size: 12px;
+}
+.raffle_data_table .col-sm-12{
+    padding: 0px;
+    
+}
 .navbar-light .navbar-nav .nav-link{
     text-align: left;
     color: #2f2c75;
