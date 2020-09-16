@@ -164,10 +164,6 @@ table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td
     float: left;
     margin-left: 0px;
 }
-
-li.paginate_button.page-item {
-    font-size: 12px;
-}
 .raffle_data_table .col-sm-12{
     padding: 0px;
     
@@ -191,4 +187,12 @@ li.paginate_button.page-item {
     padding-left: 0px;
     padding-top: 7px;
 }
+}
+
+@media screen and (max-width: 550px) and (min-width: 300px){
+    li.paginate_button.page-item a.page-link {
+        font-size: 12px;
+        padding: 7px 7px;
+    }
+
 }
