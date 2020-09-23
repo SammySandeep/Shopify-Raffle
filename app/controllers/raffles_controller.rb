@@ -57,10 +57,10 @@ class RafflesController < HomeController
     raffle = find_raffle_by_id raffle_params[:id] 
     shop = shop session
     results_participant = take_results_by_raffle_id_and_type_of_customer raffle.id, 'participant'
-    participant_customers = take_customers results_participant
-    if participant_customers.nil?
+    if results_participant[0].nil?
       redirect_to winner_and_runner_customers_path(raffle.id), notice: 'No participants found for this raffle!'
     else
+      participant_customers = take_customers results_participant
       Raffle.send_mail_for_participants raffle, participant_customers, shop 
       redirect_to winner_and_runner_customers_path(raffle.id), notice: 'Mail Triggered Successfully to all Participants!'
     end
