@@ -30,6 +30,6 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 
 # Start the main process.
-CMD dockerize -wait tcp://postgres:5432 -timeout 1m && RUBYOPT='-W:no-deprecated' rails server -b 0.0.0.0
+CMD dockerize -wait tcp://postgres:5432 -timeout 1m && rails server -b 0.0.0.0
 
 
