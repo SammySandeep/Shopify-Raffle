@@ -7,8 +7,6 @@ class AppProxy::RegistersController < ApplicationController
     create_address(customer.id, raffle.id)
     reduce_customer_chance_by_one(customer.id)
     head 200
-  rescue StandardError
-    head 400
   end
 
   private
