@@ -11,6 +11,8 @@ class AppProxy::RegistersController < ApplicationController
     product_title = product.shopify_product_title
     Mailer::Email.send_registration_confirmation_mail customer, product_title, body
     head 200
+  rescue StandardError
+    head 400
   end
 
   private
