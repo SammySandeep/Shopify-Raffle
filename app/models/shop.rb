@@ -6,6 +6,7 @@ class Shop < ActiveRecord::Base
 
   has_one :setting
   has_many :products
+  has_many :customers
   has_many :raffles
 
   def api_version
