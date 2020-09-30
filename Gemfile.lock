@@ -117,6 +117,9 @@ GEM
       graphql (~> 1.8)
     hashie (4.1.0)
     hirb (0.7.3)
+    httparty (0.17.3)
+      mime-types (~> 3.0)
+      multi_xml (>= 0.5.2)
     i18n (1.8.3)
       concurrent-ruby (~> 1.0)
     influxdb (0.8.0)
@@ -136,6 +139,9 @@ GEM
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (1.0.0)
+    mime-types (3.3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2020.0512)
     mimemagic (0.3.5)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
@@ -313,6 +319,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   dotenv-rails
   hirb
+  httparty (~> 0.17.3)
   influxdb-rails!
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
