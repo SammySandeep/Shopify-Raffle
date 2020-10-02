@@ -4,14 +4,15 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
   before_action :product_params, only: %i[create update]
 
   def create
+    head :ok
     if product_eligible_for_raffle
       product = create_product
       create_variants(product)
     end
-    head :ok
   end
 
   def update
+    head :ok
     @product = find_product_by_shopify_product_id_and_status_pending
 
     if @product.nil?
@@ -19,7 +20,6 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
         product = create_product
         create_variants(product)
       end
-      head :ok
       return
     end
     @product.shopify_product_title = product_params[:title]
@@ -44,15 +44,14 @@ class ShopifyApp::Webhooks::ProductsController < ApplicationController
       end
     end
     check_variant_removed_in_shopify
-    head :ok
   end
 
   def destroy_only_pending_raffle
+    head :ok
     product = find_product_by_shopify_product_id_and_status_pending
     if !product.nil?
       product.destroy
     end
-    head :ok
   end
 
   private
