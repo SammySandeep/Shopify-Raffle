@@ -3,6 +3,7 @@ class ShopifyApp::Webhooks::CustomersController < ApplicationController
     before_action :customer_params, only: %i[create update]
    
     def create_customer
+      head :ok
       @shop = get_shop
       if Customer.exists?(shopify_customer_id: customer_params[:id].to_s)
       else
@@ -14,22 +15,21 @@ class ShopifyApp::Webhooks::CustomersController < ApplicationController
             email_id: customer_params[:email]
           )
       end
-      head :ok
     end
 
     def update_customer
-        @customer = Customer.find_by(shopify_customer_id: customer_params[:id].to_s)
-        @customer.first_name = customer_params[:first_name]
-        @customer.last_name = customer_params[:last_name]
-        @customer.email_id = customer_params[:email]
-        @customer.save
-        head :ok
+      head :ok
+      @customer = Customer.find_by(shopify_customer_id: customer_params[:id].to_s)
+      @customer.first_name = customer_params[:first_name]
+      @customer.last_name = customer_params[:last_name]
+      @customer.email_id = customer_params[:email]
+      @customer.save
     end
 
     def delete_customer
+      head :ok
       @customer = Customer.find_by(shopify_customer_id: customer_params[:id].to_s)
       @customer.delete
-      head :ok
     end
     
     def customer_params

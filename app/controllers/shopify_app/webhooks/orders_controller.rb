@@ -3,12 +3,12 @@ class ShopifyApp::Webhooks::OrdersController < ApplicationController
     before_action :order_params, only:[:order_upadte_participant_chance]
 
     def order_upadte_participant_chance  
+        head :ok
         @shop = get_shop
         if Customer.exists?(shopify_customer_id: order_params[:id].to_s)
             customer_update = Customer.find_by(shopify_customer_id: order_params[:id].to_s)
             customer_update.increment(:default_participant_chance, by = 1)
             customer_update.save
-            head :ok
         end  
     end
   
