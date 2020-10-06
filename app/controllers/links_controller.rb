@@ -28,7 +28,7 @@ class LinksController < HomeController
             customer_address_zipcode = customer_address.pin
             shop = shop session
             shop_domain = shop.shopify_domain
-            @url = "http://#{shop_domain}/cart/#{shopify_variant_id}:#{quantity}?checkout[email]=#{customer_email}&checkout[shipping_address][first_name]=#{customer_first_name}&checkout[shipping_address][last_name]=#{customer_last_name}&checkout[shipping_address][address1]=#{customer_address1}&checkout[shipping_address][city]=#{customer_address_city}&checkout[shipping_address][zip]=#{customer_address_zipcode}"
+            @url = "https://#{shop_domain}/cart/#{shopify_variant_id}:#{quantity}?checkout[email]=#{customer_email}&checkout[shipping_address][first_name]=#{customer_first_name}&checkout[shipping_address][last_name]=#{customer_last_name}&checkout[shipping_address][address1]=#{customer_address1}&checkout[shipping_address][city]=#{customer_address_city}&checkout[shipping_address][zip]=#{customer_address_zipcode}"
             redirect_to(@url)
         end
     end
