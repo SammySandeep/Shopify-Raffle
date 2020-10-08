@@ -1,13 +1,11 @@
-class LinksController < HomeController
-    include ApplicationHelper
-    
+class LinksController < ApplicationController
     def index
     end
 
     def expiration
         result = find_result_by_raffle_id_and_customer_id params[:raffle_id], params[:customer_id]
         notification = find_notification_by_result_id result.id
-        shop = shop session
+        shop = Shop.find_by(shopify_domain: params[:shop])
         time_in_hour = shop.setting.purchase_window
         current_time = DateTime.now.in_time_zone
         actual_time = notification.created_at + time_in_hour.hours
@@ -26,10 +24,8 @@ class LinksController < HomeController
             customer_address1 = customer_address.address
             customer_address_city = customer_address.city
             customer_address_zipcode = customer_address.pin
-            shop = shop session
-            shop_domain = shop.shopify_domain
-            @url = "https://#{shop_domain}/cart/#{shopify_variant_id}:#{quantity}?checkout[email]=#{customer_email}&checkout[shipping_address][first_name]=#{customer_first_name}&checkout[shipping_address][last_name]=#{customer_last_name}&checkout[shipping_address][address1]=#{customer_address1}&checkout[shipping_address][city]=#{customer_address_city}&checkout[shipping_address][zip]=#{customer_address_zipcode}"
-            redirect_to(@url)
+            @link = "http://#{shop.shopify_domain}/cart/#{shopify_variant_id}:#{quantity}?checkout[email]=#{customer_email}&checkout[shipping_address][first_name]=#{customer_first_name}&checkout[shipping_address][last_name]=#{customer_last_name}&checkout[shipping_address][address1]=#{customer_address1}&checkout[shipping_address][city]=#{customer_address_city}&checkout[shipping_address][zip]=#{customer_address_zipcode}"
+            redirect_to(@link)
         end
     end
 
