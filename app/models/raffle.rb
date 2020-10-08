@@ -32,7 +32,7 @@ class Raffle < ApplicationRecord
   def self.send_email_for_winner_customer raffle, winner_customer, shop
     product = raffle.variant.product
     product_title = product.shopify_product_title
-    url = "#{ENV['URL']}/links/expiration?raffle_id=#{raffle.id.to_s}&customer_id=#{winner_customer.id.to_s}"
+    url = "#{ENV['URL']}/links/expiration?raffle_id=#{raffle.id.to_s}&customer_id=#{winner_customer.id.to_s}&shop=#{shop.shopify_domain}"
     body = shop.setting.email_body_for_winner
     Mailer::Email.send_winner_mail product_title, raffle, winner_customer, url, body
   end
