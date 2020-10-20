@@ -20,41 +20,36 @@ table.dataTable thead .sorting_desc_disabled:before{
         <thead>
             <tr>
                 <th>Product Title</th>
-                <th>Release Date</th>
-                <th>Online/Offline</th>
-                <th>View Variants</th>
-                <%
-=begin%>
- <th>Variant Title</th>
+                <th>Variant Title</th>
                 <th>Release Date</th>
                 <th>Online/Offline</th>
                 <th>View Results</th>
-                <th>View All Entries</th> 
-<%
-=end%>
+                <th>View All Entries</th>
             </tr>
         </thead>
         <tbody>
-        <% if @products.nil? %>
+        <% if @variants.nil? %>
         <% else %>
-          <%@products.each do |product| %>
+          <%@variants.each do |var| %>
             <tr>
-                <% variant = Variant.find_by(product_id: product.id) %> 
-                <td><%= product.shopify_product_title %></td>
-                <td><%= variant.raffle.launch_date_time %></td>
-                <td><%= variant.raffle.delivery_method %></td>
-                <% if product.has_variant == true %>
-                    <td><%= button_to  "View Variants", view_variants_path(product.id),:class => "raffle_btn", :method => :get, :id => "resultbtn", :disabled => false %></td>
-                <% end %>    
+           
+                <td><%= var.variant.product.shopify_product_title %></td>
+                <td><%= var.variant.title %></td>
+                <td><%= var.launch_date_time%></td>
+                <td><%= var.delivery_method %></td>
+                <% if var.variant.product.status == 'completed' %>
+                  <td><%= button_to  "View Results", winner_and_runner_customers_path(var.id),:class => "raffle_btn", :method => :get, :id => "resultbtn", :disabled => false %></td>
+                <% else %>
+                  <td><%= button_to  "View Results", winner_and_runner_customers_path(var.id),:class => "raffle_btn_disabled", :method => :get, :id => "resultbtn", :disabled => true %></td>
+                <% end %>
+                <td><%= button_to  "View Entries", raffle_participant_customers_path(var.id),:class => "raffle_btn", :method => :get %> </td>
             </tr>
           <% end %>
           <% end %>
-        </tbody>
+            </tbody>
     </table>
     </div>
 </section>
-
-
 <script>
 $(document).ready(function() {
     $('#example').DataTable();

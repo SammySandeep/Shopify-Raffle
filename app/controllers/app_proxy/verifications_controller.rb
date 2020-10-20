@@ -87,7 +87,7 @@ class AppProxy::VerificationsController < ApplicationController
     if decrypted_data == verification_params_for_verify_otp[:code]
       customer_expiration_date_time = find_customer_verification_code_expiration_date_time customer
       if customer_expiration_date_time >= DateTime.now.in_time_zone
-        customer.verified = true
+        customer.verified = true8
         customer.save
         return true
       end
