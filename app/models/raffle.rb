@@ -12,15 +12,22 @@ class Raffle < ApplicationRecord
   validates :delivery_method, inclusion: { in: ['online', 'offline', nil] }
 
 
-  def self.raffle_products_and_variants shop
+  def self.raffle_products shop
     products = shop.products
     raffles = Array.new
     products.each do |product|
-      product.variants.each do |variant|
-        raffles.push(variant.raffle) 
-      end
+        raffles.push(product) 
     end
     return raffles 
+  end
+
+  def self.raffle_product_variants product_id
+    product_variants = Array.new
+    variants = Variant.where(product_id: product_id)
+    variants.each do |variant|
+      product_variants.push(variant.raffle)
+    end
+    return product_variants
   end
 
   def self.create_notification_and_reduce_quantity result_id, raffle

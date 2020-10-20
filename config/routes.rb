@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get 'raffles', to: 'raffles#index'
   get 'raffles/participant_customers/:id', to: 'raffles#participant_customers', as: 'raffle_participant_customers'
   get 'raffles/winner_and_runner_customers/:id', to: 'raffles#winner_and_runner_customers', as: 'winner_and_runner_customers'
-
+  get 'raffles/view_variants/:id', to: 'raffles#view_variants', as: 'view_variants'
   namespace :app_proxy do
     get 'verifications/send_otp', to: 'verifications#send_otp'
     get 'verifications/verify_otp', to: 'verifications#verify_otp'

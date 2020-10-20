@@ -9,6 +9,11 @@
             <li>Variant Title :<%= @raffle.variant.title %></li>
             <li>Inventory :<%= @raffle.variant.inventory_quantity %></li>
           </ul>
+          <div class="products_details_left">
+            <% raffle = Raffle.find_by(id: params[:id]) %>
+            <span><%= button_to "Back", view_variants_path(raffle.variant.product.id),:class => "raffle_btn", :method => :get%>
+            </span>
+          </div>
         </div>
         <div class="col-md-6">
           <div class="results_data_right">
