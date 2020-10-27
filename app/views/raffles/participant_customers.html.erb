@@ -23,7 +23,9 @@
             <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Address</th>
+                <% if raffle.delivery_method == 'online' %>
+                    <th>Address</th>
+                <% end %>    
                 <th>Phone</th>
             </tr>
         </thead>
@@ -33,14 +35,16 @@
                 <td><%= customer.first_name + ' ' + customer.last_name %></td>
                 <td><%= customer.email_id %></td>
                 <% customer_address = Address.find_by(customer_id: customer.id, raffle_id: @raffle.id) %>
-                  <% unless customer_address.nil? %>
-                  <td>
-                    <%= simple_format(customer_address.address + '<br/>' + customer_address.city + '&nbsp;' + customer_address.country + '&nbsp;' + customer_address.state  + '&nbsp;' + customer_address.pin.to_s) %>
-                  </td>
-                  <td>
-                    <%= customer_address.phone %>  
-                  </td>
-                  <% end %>
+                <% if raffle.delivery_method == 'online' %>    
+                      <% unless customer_address.nil? %>
+                          <td>
+                              <%= simple_format(customer_address.address + '<br/>' + customer_address.city + '&nbsp;' + customer_address.country + '&nbsp;' + customer_address.state  + '&nbsp;' + customer_address.pin.to_s) %>
+                          </td>
+                <% end %>
+                      <% end %>
+    
+                <td><%= customer_address.phone %></td>
+                      
             </tr>
         <% end %>
       </table>

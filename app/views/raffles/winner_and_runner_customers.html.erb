@@ -34,7 +34,9 @@
                   <tr style="background:#2f2c75;color:#fff;">
                       <td>Name</td>
                       <td>Email</td>
-                      <td>Address</td>
+                      <% if @raffle.delivery_method == 'online' %>
+                          <td>Address</td>
+                      <% end %>
                       <td>Phone</td>
                       <td>Notify</td>
                       
@@ -42,20 +44,20 @@
                   <tr>
                         <td><%= @winner_customer.first_name + ' ' + @winner_customer.last_name %></td>
                         <td><%= @winner_customer.email_id %></td>
-                        <% customer_address = Address.find_by(customer_id: @winner_customer.id, raffle_id: @raffle.id) %>
-                          <% unless customer_address.nil? %>
-                          <td> 
-                            <%= simple_format(customer_address.address + '<br/>' + customer_address.city + '&nbsp;' + customer_address.country + '&nbsp;' + customer_address.state  + '&nbsp;' + customer_address.pin.to_s) %>
-                          </td>
-                          <td>
-                            <%= customer_address.phone %>  
-                          </td>
-                          <% end %>
-                          <% if @raffle.variant.inventory_quantity > 0 %>
-                            <td><%= button_to "Notify", raffle_send_mail_to_winner_path(@raffle.id),:class => "raffle_btn", :method => :get, :disabled => false %> </td>
-                          <% else %>
-                            <td><%= button_to "Notify", raffle_send_mail_to_winner_path(@raffle.id),:class => "raffle_btn_disabled", :method => :get, :disabled => true %> </td>
-                          <% end %>
+                            <% customer_address = Address.find_by(customer_id: @winner_customer.id, raffle_id: @raffle.id) %>
+                            <% if @raffle.delivery_method == 'online' %>
+                                <% unless customer_address.nil? %>
+                                  <td> 
+                                    <%= simple_format(customer_address.address + '<br/>' + customer_address.city + '&nbsp;' + customer_address.country + '&nbsp;' + customer_address.state  + '&nbsp;' + customer_address.pin.to_s) %>
+                                  </td>
+                            <% end %>
+                                <% end %>
+                        <td><%= customer_address.phone %> </td>
+                        <% if @raffle.variant.inventory_quantity > 0 %>
+                          <td><%= button_to "Notify", raffle_send_mail_to_winner_path(@raffle.id),:class => "raffle_btn", :method => :get, :disabled => false %> </td>
+                        <% else %>
+                          <td><%= button_to "Notify", raffle_send_mail_to_winner_path(@raffle.id),:class => "raffle_btn_disabled", :method => :get, :disabled => true %> </td>
+                        <% end %>
                     
                   </tr>
                
@@ -73,7 +75,9 @@
                 <tr style="background:#2f2c75;color:#fff;">
                     <td>Name</td>
                     <td>Email</td>
-                    <td>Address</td>
+                    <% if @raffle.delivery_method == 'online' %>
+                        <td>Address</td>
+                    <% end %>
                     <td>Phone</td>
                     <td>Notify</td>
                 </tr>
@@ -82,17 +86,17 @@
                 <tr>
                   <td><%= customer.first_name + ' ' + customer.last_name %></td>
                   <td><%= customer.email_id %></td>
-                  <% customer_address = Address.find_by(customer_id: customer.id, raffle_id: @raffle.id) %>
-                    <% unless customer_address.nil? %>
-                        <td>
-                          <%= simple_format(customer_address.address + '<br/>' + customer_address.city + '&nbsp;' + customer_address.country + '&nbsp;' + customer_address.state  + '&nbsp;' + customer_address.pin.to_s) %>
-                        </td>
-                        <td>
-                          <%= customer_address.phone %>  
-                        </td>
-                    <% end %>
-                  
-                      <td><%= link_to_if(@raffle.variant.inventory_quantity > 0, "Notify".html_safe, raffle_send_mail_to_runner_path(:customer_id => customer.id,:raffle_id => @raffle.id),:class => " btn raffle_btn", :method => :get) %> </td>
+                      <% customer_address = Address.find_by(customer_id: customer.id, raffle_id: @raffle.id) %>
+                      <% if @raffle.delivery_method == 'online' %>  
+                          <% unless customer_address.nil? %>
+                              <td>
+                                <%= simple_format(customer_address.address + '<br/>' + customer_address.city + '&nbsp;' + customer_address.country + '&nbsp;' + customer_address.state  + '&nbsp;' + customer_address.pin.to_s) %>
+                              </td>
+                      <% end %>
+                          <% end %>
+                  <td><%= customer_address.phone %></td>
+
+                  <td><%= link_to_if(@raffle.variant.inventory_quantity > 0, "Notify".html_safe, raffle_send_mail_to_runner_path(:customer_id => customer.id,:raffle_id => @raffle.id),:class => " btn raffle_btn", :method => :get) %> </td>
          
                 </tr>
 
