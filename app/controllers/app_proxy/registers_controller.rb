@@ -4,7 +4,11 @@ class AppProxy::RegistersController < ApplicationController
   def register_customer
     customer = find_customer_by_email
     raffle = find_variant_by_shopify_variant_id.raffle
-    create_address(customer.id, raffle.id)
+    if raffle.delivery_method == 'online'
+      create_address_for_online(customer.id, raffle.id)
+    else  
+      create_address(customer.id, raffle.id)
+    end
     reduce_customer_chance_by_one(customer.id)
     body = Setting.first.email_body_for_registration
     product = raffle.variant.product
@@ -18,6 +22,13 @@ class AppProxy::RegistersController < ApplicationController
   private
 
   def create_address(customer_id, raffle_id)
+    address = Address.new(address_params)
+    address.customer_id = customer_id
+    address.raffle_id = raffle_id
+    address.save(validate: false)
+  end
+
+  def create_address_for_online(customer_id, raffle_id)
     address = Address.new(address_params)
     address.customer_id = customer_id
     address.raffle_id = raffle_id
