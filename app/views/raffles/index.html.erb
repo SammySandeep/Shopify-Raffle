@@ -23,15 +23,6 @@ table.dataTable thead .sorting_desc_disabled:before{
                 <th>Release Date</th>
                 <th>Online/Offline</th>
                 <th>View Variants</th>
-                <%
-=begin%>
- <th>Variant Title</th>
-                <th>Release Date</th>
-                <th>Online/Offline</th>
-                <th>View Results</th>
-                <th>View All Entries</th> 
-<%
-=end%>
             </tr>
         </thead>
         <tbody>
@@ -39,10 +30,10 @@ table.dataTable thead .sorting_desc_disabled:before{
         <% else %>
           <%@products.each do |product| %>
             <tr>
-                <% variant = Variant.find_by(product_id: product.id) %> 
+                <% variant = Variant.where(product_id: product.id) %> 
                 <td><%= product.shopify_product_title %></td>
-                <td><%= variant.raffle.launch_date_time %></td>
-                <td><%= variant.raffle.delivery_method %></td>
+                <td><%= variant[0].raffle.launch_date_time %></td>
+                <td><%= variant[0].raffle.delivery_method %></td>
                 <% if product.has_variant == true %>
                     <td><%= button_to  "View Variants", view_variants_path(product.id),:class => "raffle_btn", :method => :get, :id => "resultbtn", :disabled => false %></td>
                 <% end %>    
