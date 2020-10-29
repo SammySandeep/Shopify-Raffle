@@ -5,7 +5,6 @@ class Address < ApplicationRecord
   belongs_to :customer
 
   validates :address, presence: true, :uniqueness => {:scope => [:customer_id, :raffle_id]}
-  validates :address, format: { with: /[a-zA-Z]/ }
   validates :city, presence: true
   validates :city, format: { with: /[a-zA-Z]/ }
   validates :country, presence: true
