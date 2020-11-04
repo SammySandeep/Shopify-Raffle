@@ -33,7 +33,7 @@ class ShopifyApp::Webhooks::CustomersController < ApplicationController
     end
     
     def customer_params
-      params.permit(:id, :first_name, :last_name, :email).to_h  
+      params.permit!
     end
 
     private
