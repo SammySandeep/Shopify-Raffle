@@ -8,7 +8,7 @@ class Customer < ApplicationRecord
   has_many :raffles, through: :results
   has_one :address
 
-  validates :shopify_customer_id, numericality: { greater_than: 0 }, presence: true
-  validates :default_participant_chance, numericality: { greater_than_or_equal_to: -1 }
+  validates :shopify_customer_id, numericality: { greater_than: 0 }, presence: true, uniqueness: { scope: :shop_id }
   validates :shop_id, numericality: { greater_than: 0 }, presence: true
+  
 end

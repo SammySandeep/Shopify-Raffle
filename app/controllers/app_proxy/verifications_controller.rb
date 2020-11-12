@@ -7,11 +7,11 @@ class AppProxy::VerificationsController < ApplicationController
   # status of 200 valid customer needs to verify OTP
   # status of 202 customer already validated show variant page
   # status of 406 customer already registered for this raffle
-  # status of 403 customer participant chance if -1
+  
   def send_otp
     customer = find_customer_by_email_id
     
-    return if !validate_email_for_already_registered_or_customer_chance_over customer
+    return if !validate_email_for_already_registered customer
 
     if !customer.verified
       customer_dix_digit_otp = create_or_update_customer_verification customer
@@ -57,13 +57,9 @@ class AppProxy::VerificationsController < ApplicationController
     return random_six_digit_number
   end
 
-  def validate_email_for_already_registered_or_customer_chance_over customer
+  def validate_email_for_already_registered customer
     if validate_if_customer_already_registered customer
       head 406
-      return false
-    end
-    if customer.default_participant_chance.negative?
-      head 403
       return false
     end
     return true
